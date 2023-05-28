@@ -4,16 +4,35 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 
 //Controller untuk pergerakan, animasi, dan serangan 
-public class PlayerController : MonoBehaviour
+public class PlayerControllers : MonoBehaviour
 {
+    public float Health
+    {
+        set
+        {
+            health = value;
+            if (health <= 0)
+            {
+                Dead();
+            }
+        }
+        get
+        {
+            return health;
+        }
+    }
+    [SerializeField] private float health = 1;
+
     [SerializeField] SwordScript swordScript;
     [SerializeField] private float moveSpeed = 1f; // Kecepatan pergerakan karakter
+    [SerializeField] private float maxSpeed = 2.2f; // Kecepatan maximal karakter
+    [SerializeField] private float idleFriction;
     [SerializeField] private float collisionOffset = 0.05f; // Jarak tambahan untuk menghindari tabrakan
     [SerializeField] private ContactFilter2D movementFilter; // Filter yang digunakan untuk mendeteksi tabrakan saat bergerak
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private Vector2 movementInput; // Nilai input untuk arah pergerakan
+    private Vector2 movementInput = Vector2.zero; // Nilai input untuk arah pergerakan
     private Rigidbody2D rb; // Referensi ke komponen Rigidbody2D
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>(); // List untuk menyimpan hasil tabrakan
     private bool canMove = true;
@@ -25,7 +44,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (movementInput != Vector2.zero) // Memeriksa apakah ada input pergerakan
         {
@@ -52,12 +71,37 @@ public class PlayerController : MonoBehaviour
         if (movementInput.x < 0)
         {
             spriteRenderer.flipX = true;
+            swordScript.AttackLeft();
         }
         else if (movementInput.x > 0)
         {
             spriteRenderer.flipX = false;
+            swordScript.AttackRight();
         }
     }
+
+    // private void FixedUpdate()
+    // {
+    //     if (movementInput != Vector2.zero)
+    //     {
+    //         rb.velocity = Vector2.ClampMagnitude(rb.velocity + (movementInput * moveSpeed * Time.deltaTime), maxSpeed);
+
+    //         if (movementInput.x > 0)
+    //         {
+    //             spriteRenderer.flipX = false;
+    //         }
+    //         else if (movementInput.x < 0)
+    //         {
+    //             spriteRenderer.flipX = true;
+    //         }
+
+    //         // UpdateAnimatorParamter();
+    //     }
+    //     else
+    //     {
+    //         rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, idleFriction);
+    //     }
+    // }
 
     private bool TryMove(Vector2 direction)
     {
@@ -97,23 +141,6 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("swordAttack");
     }
 
-    public void SwordAttack()
-    {
-        if (spriteRenderer.flipX == true)
-        {
-            swordScript.AttackLeft();
-        }
-        else
-        {
-            swordScript.AttackRight();
-        }
-    }
-
-    public void EndSwordAttack()
-    {   
-        swordScript.StopAttack();
-    }
-
     public void LockMovement()
     {
         canMove = false;
@@ -122,5 +149,15 @@ public class PlayerController : MonoBehaviour
     public void UnlockMovement()
     {
         canMove = true;
+    }
+
+    public void Dead()
+    {
+        animator.SetTrigger("Dead");
+    }
+
+    public void RemovePlayer()
+    {
+        Destroy(this.gameObject);
     }
 }
