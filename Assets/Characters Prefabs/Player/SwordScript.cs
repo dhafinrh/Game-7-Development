@@ -5,6 +5,7 @@ using UnityEngine;
 public class SwordScript : MonoBehaviour
 {
     [SerializeField] private float damage = 3;
+    [SerializeField] private float knockbackForce = 500;
     Vector3 rightAttackOffset;
     Collider2D swordCollider;
 
@@ -26,16 +27,21 @@ public class SwordScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        IDamageable damagAbleObject = other.GetComponent<IDamageable>();
         if (other.CompareTag("Enemy"))
         {
-            other.SendMessage("OnHit", damage);
-            
-            // EnemyScript enemyScript = other.GetComponent<EnemyScript>();
+            if (damagAbleObject != null)
+            {
+                Vector3 parent = gameObject.GetComponentInParent<Transform>().position;
+                Vector2 direction = (Vector2)(other.gameObject.transform.position - parent).normalized;
+                Vector2 knockBack = direction * knockbackForce;
 
-            // if (enemyScript != null)
-            // {
-            //     enemyScript.Health -= damage;
-            // }
+                damagAbleObject.OnHit(damage, knockBack);
+            }
+            else
+            {
+                Debug.LogWarning("Collider does not implement IDamagable");
+            }
         }
     }
 }

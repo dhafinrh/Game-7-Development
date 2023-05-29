@@ -6,6 +6,15 @@ public interface IDamageable
     {
         set; get;
     }
+    public bool Invincible
+    {
+        set; get;
+    }
+
+    public void OnHit(float damage, Vector2 knockBack)
+    {
+
+    }
 
     public void OnHit(float damage)
     {

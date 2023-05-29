@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9197401694688551443}
   - component: {fileID: 7109330351791961434}
   - component: {fileID: 5666688118729820379}
+  - component: {fileID: 5273386491257249003}
   - component: {fileID: 3513046305493816555}
   - component: {fileID: 118844040821808857}
   - component: {fileID: 8554909045711663761}
@@ -133,8 +134,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordScript: {fileID: 4807813881315340925}
-  moveSpeed: 1
-  maxSpeed: 1
+  moveSpeed: 800
+  moveDrag: 15
+  stopDrag: 25
   idleFriction: 0.9
   collisionOffset: 0.05
   movementFilter:
@@ -151,6 +153,22 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+--- !u!114 &5273386491257249003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335899980777018718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf0168a6b6f5824ebedeaa3759ea42a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isInvincibleEnabled: 1
+  invincibleTime: 1
+  health: 100
+  dmgText: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
 --- !u!50 &3513046305493816555
 Rigidbody2D:
   serializedVersion: 4
@@ -159,12 +177,12 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2335899980777018718}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 15
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -185,7 +203,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0051222686, y: -0.15973}
+  m_Offset: {x: 0.0051222667, y: -0.16541162}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -196,7 +214,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.09073657, y: 0.021327466}
+  m_Size: {x: 0.09073657, y: 0.009964228}
   m_EdgeRadius: 0
 --- !u!95 &8554909045711663761
 Animator:
@@ -289,5 +307,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761f0ed9cfa667f4a8e1ef14e4856061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordCollider: {fileID: 7989389885547091893}
   damage: 3
+  knockbackForce: 1
