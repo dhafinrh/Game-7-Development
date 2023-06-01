@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class HealthManager : MonoBehaviour, IDamageable
 {
@@ -34,12 +37,6 @@ public class HealthManager : MonoBehaviour, IDamageable
             else
             {
                 Damage();
-
-                RectTransform textTransform = Instantiate(dmgText).GetComponent<RectTransform>();
-                textTransform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-
-                Canvas canvas = GameObject.FindObjectOfType<Canvas>();
-                textTransform.SetParent(canvas.transform);
             }
         }
         get
@@ -50,14 +47,19 @@ public class HealthManager : MonoBehaviour, IDamageable
 
     [SerializeField] private bool isInvincibleEnabled = false;
     [SerializeField] private float invincibleTime = 0.5f;
-    [SerializeField] private float health = 1;
-    [SerializeField] private GameObject dmgText;
+    [SerializeField] private float health;
 
-    private void Start()
+    [SerializeField] private GameObject dmgTextPrefab;
+    [SerializeField] private TMP_Text dmgText;
+    [SerializeField] private UnityEvent<float> OnStart;
+    [SerializeField] private UnityEvent <float>OnHitUpdate;
+
+    private void Awake()
     {
         animator = GetComponent<Animator>();
         enemyCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
+        OnStart.Invoke(Health);
     }
 
     private void FixedUpdate()
@@ -94,8 +96,9 @@ public class HealthManager : MonoBehaviour, IDamageable
         if (!invincible)
         {
             Health -= damage;
-
+            OnHitUpdate.Invoke(Health);
             rb.AddForce(knockBack, ForceMode2D.Impulse);
+            TextDamage(damage);
 
             if (isInvincibleEnabled)
             {
@@ -109,11 +112,23 @@ public class HealthManager : MonoBehaviour, IDamageable
         if (!invincible)
         {
             Health -= damage;
+            OnHitUpdate.Invoke(Health);
+            TextDamage(damage);
 
             if (isInvincibleEnabled)
             {
                 invincible = true;
             }
         }
+    }
+
+    private void TextDamage(float damageAmount)
+    {
+        dmgText.text = damageAmount.ToString();
+        RectTransform textTransform = Instantiate(dmgTextPrefab).GetComponent<RectTransform>();
+        textTransform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
+
+        Canvas canvas = GameObject.FindWithTag("GameplayUI").GetComponent<Canvas>();
+        textTransform.SetParent(canvas.transform);
     }
 }

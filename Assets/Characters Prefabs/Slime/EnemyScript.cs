@@ -9,10 +9,12 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private DetectPlayer detectPlayer;
     [SerializeField] private float movSpeed;
     Rigidbody2D rb;
+    SpriteRenderer spriteRenderer;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -22,6 +24,15 @@ public class EnemyScript : MonoBehaviour
             Vector2 direction = (detectPlayer.detectedObj[0].transform.position - transform.position).normalized;
 
             rb.AddForce(direction * movSpeed * Time.deltaTime);
+
+            if (direction.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else if (direction.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
         }
     }
 

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1455509891824136857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9208035988566907879}
+  m_Layer: 0
+  m_Name: RayPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9208035988566907879
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455509891824136857}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5974629005901044243}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2335899980777018718
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +67,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4147803190302142282}
+  - {fileID: 9208035988566907879}
+  - {fileID: 2962376364684812227}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -134,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordScript: {fileID: 4807813881315340925}
-  moveSpeed: 800
+  moveSpeed: 1
   moveDrag: 15
   stopDrag: 25
   idleFriction: 0.9
@@ -153,6 +186,20 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  RayPoint: {fileID: 9208035988566907879}
+  GrabPoint: {fileID: 2962376364684812227}
+  RayDistance: 0.2
+  throwablePrefabs: []
+  activeThrowable: []
+  throwPower: 2
+  throwRange: 0.2
+  throwDirection: {x: 1, y: 0.6}
+  arrowAim: {fileID: 0}
+  timer: 5
+  OnCoolDown:
+    m_PersistentCalls:
+      m_Calls: []
+  isCursorVisible: 0
 --- !u!114 &5273386491257249003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,8 +214,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInvincibleEnabled: 1
   invincibleTime: 1
-  health: 100
-  dmgText: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
+  health: 10
+  dmgTextPrefab: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
+  dmgText: {fileID: 1011127707723379103, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
+  OnStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHitUpdate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &3513046305493816555
 Rigidbody2D:
   serializedVersion: 4
@@ -203,7 +257,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0051222667, y: -0.16541162}
+  m_Offset: {x: 0.0051222667, y: -0.083835736}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -214,7 +268,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.09073657, y: 0.009964228}
+  m_Size: {x: 0.09073657, y: 0.173116}
   m_EdgeRadius: 0
 --- !u!95 &8554909045711663761
 Animator:
@@ -309,3 +363,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 3
   knockbackForce: 1
+  amplitude: 0.2
+  frequention: 0.1
+  shakeTime: 0.25
+--- !u!1 &7316473299516597065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2962376364684812227}
+  m_Layer: 0
+  m_Name: GrabPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2962376364684812227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316473299516597065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5974629005901044243}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

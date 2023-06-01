@@ -9,6 +9,11 @@ public class SwordScript : MonoBehaviour
     Vector3 rightAttackOffset;
     Collider2D swordCollider;
 
+    [Header("Camera Properties")]
+    [SerializeField] private float amplitude;
+    [SerializeField] private float frequention;
+    [SerializeField] private float shakeTime;
+
     private void Start()
     {
         rightAttackOffset = transform.localPosition;
@@ -25,6 +30,11 @@ public class SwordScript : MonoBehaviour
         transform.localPosition = new Vector3(rightAttackOffset.x * -1, rightAttackOffset.y);
     }
 
+    public void ShakeAttack()
+    {
+        CameraShake.Instance.ShakeEffect(frequention, amplitude, shakeTime);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         IDamageable damagAbleObject = other.GetComponent<IDamageable>();
@@ -32,6 +42,7 @@ public class SwordScript : MonoBehaviour
         {
             if (damagAbleObject != null)
             {
+                ShakeAttack();
                 Vector3 parent = gameObject.GetComponentInParent<Transform>().position;
                 Vector2 direction = (Vector2)(other.gameObject.transform.position - parent).normalized;
                 Vector2 knockBack = direction * knockbackForce;
