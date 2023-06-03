@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - GameplayUI
+  - Bomb
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - GrabAble
   - Throwable
   - Enemy
-  - 
-  - 
+  - Fly Enemy
+  - TileMap
   - 
   - 
   - 

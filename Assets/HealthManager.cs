@@ -51,8 +51,9 @@ public class HealthManager : MonoBehaviour, IDamageable
 
     [SerializeField] private GameObject dmgTextPrefab;
     [SerializeField] private TMP_Text dmgText;
+    [SerializeField] private string colorHex;
     [SerializeField] private UnityEvent<float> OnStart;
-    [SerializeField] private UnityEvent <float>OnHitUpdate;
+    [SerializeField] private UnityEvent<float> OnHitUpdate;
 
     private void Awake()
     {
@@ -98,7 +99,7 @@ public class HealthManager : MonoBehaviour, IDamageable
             Health -= damage;
             OnHitUpdate.Invoke(Health);
             rb.AddForce(knockBack, ForceMode2D.Impulse);
-            TextDamage(damage);
+            TextDamage(damage, 0);
 
             if (isInvincibleEnabled)
             {
@@ -107,13 +108,13 @@ public class HealthManager : MonoBehaviour, IDamageable
         }
     }
 
-    public void OnHit(float damage)
+    public void OnHit(float damage, int crit)
     {
         if (!invincible)
         {
             Health -= damage;
             OnHitUpdate.Invoke(Health);
-            TextDamage(damage);
+            TextDamage(damage, crit);
 
             if (isInvincibleEnabled)
             {
@@ -122,13 +123,33 @@ public class HealthManager : MonoBehaviour, IDamageable
         }
     }
 
-    private void TextDamage(float damageAmount)
+    private void TextDamage(float damageAmount, int crit)
     {
-        dmgText.text = damageAmount.ToString();
         RectTransform textTransform = Instantiate(dmgTextPrefab).GetComponent<RectTransform>();
         textTransform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 
         Canvas canvas = GameObject.FindWithTag("GameplayUI").GetComponent<Canvas>();
         textTransform.SetParent(canvas.transform);
+
+        TMP_Text textComponent = textTransform.GetComponent<TMP_Text>();
+        textComponent.text = damageAmount.ToString();
+
+        if (crit == 1)
+        {
+            Color color;
+            if (ColorUtility.TryParseHtmlString(colorHex, out color))
+            {
+                textComponent.color = color;
+            }
+            else
+            {
+                textComponent.color = Color.white;
+            }
+            textComponent.fontSize = 70f;
+        }
+        else
+        {
+            textComponent.color = Color.white;
+        }
     }
 }

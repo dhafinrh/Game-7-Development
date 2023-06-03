@@ -5,10 +5,12 @@ using UnityEngine;
 public class BombScript : MonoBehaviour
 {
     Rigidbody2D rb;
+    [SerializeField] private BombType bombType;
     [SerializeField] private float explosionForce = 10f;
     [SerializeField] private float explosionRadius = 5f;
-    [SerializeField] private float damage = 1;
+    [SerializeField] private float defaultDamage = 1;
     IDamageable damageableObject;
+    int crit;
     bool hasCollide = false;
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -38,20 +40,54 @@ public class BombScript : MonoBehaviour
         // Apply explosion force to all nearby enemies
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius: explosionRadius);
         foreach (Collider2D collider in colliders)
-
         {
             if (collider.CompareTag("Enemy"))
             {
+                EnemyScript enemyType = collider.GetComponent<EnemyScript>();
+                HealthManager critText = collider.GetComponent<HealthManager>();
+                float damage = defaultDamage;
+                float forceMultiplier;
+
+                // Adjust damage and force based on enemy name
+                if (enemyType.EnemyType == EnemyType.Kardus && bombType == BombType.Water)
+                {
+                    // Debug.Log("Kardus Ketemu Air");
+                    damage *= 3f;
+                    forceMultiplier = 1.5f;
+                    crit = 1;
+
+                }
+                else if (enemyType.EnemyType == EnemyType.Botol && bombType == BombType.Fire)
+                {
+                    //Debug.Log("Botol Ketemu Api");
+                    damage *= 3f;
+                    forceMultiplier = 1.5f;
+                    crit = 1;
+
+                }
+                else if (enemyType.EnemyType == EnemyType.Bug && bombType == BombType.Bug)
+                {
+                    damage *= 9f;
+                    forceMultiplier = 1.5f;
+                    crit = 1;
+                }
+                else
+                {
+                    damage = defaultDamage;
+                    forceMultiplier = 1f;
+                    crit = 0;
+                }
+
                 Rigidbody2D enemyRb = collider.GetComponent<Rigidbody2D>();
                 if (enemyRb != null)
                 {
                     Vector2 direction = enemyRb.transform.position - transform.position;
-                    enemyRb.AddForce(direction.normalized * explosionForce, ForceMode2D.Impulse);
+                    enemyRb.AddForce(direction.normalized * explosionForce * forceMultiplier, ForceMode2D.Impulse);
 
                     damageableObject = collider.GetComponent<IDamageable>();
                     if (damageableObject != null)
                     {
-                        damageableObject.OnHit(damage);
+                        damageableObject.OnHit(damage, crit);
                     }
                 }
             }

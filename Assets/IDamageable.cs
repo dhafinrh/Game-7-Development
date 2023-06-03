@@ -16,7 +16,7 @@ public interface IDamageable
 
     }
 
-    public void OnHit(float damage)
+    public void OnHit(float damage, int crit)
     {
 
     }

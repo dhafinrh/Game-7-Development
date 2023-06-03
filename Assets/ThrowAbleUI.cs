@@ -6,9 +6,9 @@ using TMPro;
 
 public class ThrowAbleUI : MonoBehaviour
 {
-    [SerializeField] private float cooldownDuration;
     [SerializeField] private Image coolDownImg;
     [SerializeField] private TMP_Text cooldownText;
+    private float cooldownDuration = 0;
     private float currentCooldown = 0;
 
     private void Update()
@@ -29,9 +29,10 @@ public class ThrowAbleUI : MonoBehaviour
         }
     }
 
-    public void StartCooldown()
+    public void StartCooldown(float cooldown)
     {
-        currentCooldown = cooldownDuration;
+        cooldownDuration = cooldown;
+        currentCooldown = cooldown;
         cooldownText.enabled = true;
     }
 }

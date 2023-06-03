@@ -94,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -148,6 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01540dadefb02348b15bdd4e0ed649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToLive: 0.5
+  timeToLive: 0.8
   floatSpeed: 500
   floatDirection: {x: 0, y: 1, z: 0}

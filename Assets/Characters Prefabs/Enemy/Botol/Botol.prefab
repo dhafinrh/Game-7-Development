@@ -334,12 +334,12 @@ GameObject:
   - component: {fileID: 8861001249861098600}
   - component: {fileID: 89813165393916052}
   m_Layer: 8
-  m_Name: Slime
+  m_Name: Botol
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1411367376492067018
 Transform:
   m_ObjectHideFlags: 0
@@ -442,10 +442,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636245285b977f94a8de271e11986e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 2
   damage: 1
   knockBackForce: 5
   detectPlayer: {fileID: 8246428446016058634}
   movSpeed: 50
+  minDistance: 0
 --- !u!95 &4207521652355015947
 Animator:
   serializedVersion: 5
@@ -480,15 +482,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInvincibleEnabled: 1
   invincibleTime: 1
-  health: 9
+  health: 18
   dmgTextPrefab: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
   dmgText: {fileID: 1011127707723379103, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
-  OnHitUpdate:
+  colorHex: '#FF9284'
+  OnStart:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 89813165393916052}
         m_TargetAssemblyTypeName: HealthBarUI, Assembly-CSharp
-        m_MethodName: UpdateHealthBar
+        m_MethodName: MaxHealth
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -498,12 +501,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnStart:
+  OnHitUpdate:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 89813165393916052}
         m_TargetAssemblyTypeName: HealthBarUI, Assembly-CSharp
-        m_MethodName: MaxHealth
+        m_MethodName: UpdateHealthBar
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

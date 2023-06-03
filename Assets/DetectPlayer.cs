@@ -6,7 +6,7 @@ public class DetectPlayer : MonoBehaviour
 {
     public List<Collider2D> detectedObj = new List<Collider2D>();
     [SerializeField] private Collider2D detectCol;
-    void Start()
+    void OnEnable()
     {
         detectCol.GetComponent<Collider2D>();
     }
@@ -15,11 +15,23 @@ public class DetectPlayer : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             detectedObj.Add(other);
+
+        if (other.GetComponent<BombScript>() != null)
+        {
+            if (!detectedObj.Contains(other))
+                detectedObj.Add(other);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-            detectedObj.Remove(other);
+        // if (other.CompareTag("Player"))
+        //     detectedObj.Remove(other);
+
+        if (other.GetComponent<BombScript>() != null)
+        {
+            if (detectedObj.Contains(other))
+                detectedObj.Remove(other);
+        }
     }
 }
