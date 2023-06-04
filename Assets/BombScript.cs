@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BombScript : MonoBehaviour
 {
-    Rigidbody2D rb;
     [SerializeField] private BombType bombType;
     [SerializeField] private float explosionForce = 10f;
     [SerializeField] private float explosionRadius = 5f;
@@ -24,7 +23,6 @@ public class BombScript : MonoBehaviour
 
     private void OnEnable()
     {
-        rb = GetComponent<Rigidbody2D>();
         StartCoroutine(DestroyBomb());
     }
 
@@ -35,7 +33,7 @@ public class BombScript : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    private void Explode()
+    private void Explode( )
     {
         // Apply explosion force to all nearby enemies
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius: explosionRadius);

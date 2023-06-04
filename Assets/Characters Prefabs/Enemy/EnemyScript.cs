@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -8,19 +9,46 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private float damage = 1;
     [SerializeField] private float knockBackForce = 10f;
     [SerializeField] private DetectPlayer detectPlayer;
+    [SerializeField] private TMP_Text exclam;
     [SerializeField] private float movSpeed;
-    [SerializeField] private float avoidForce = 10f;
-    [SerializeField] private float minDistance;
+    private Animator animator;
+    private bool isMoving = false;
+    public bool IsMoving
+    {
+        set
+        {
+            isMoving = value;
+            animator.SetBool("isMoving", value);
+        }
+    }
+    private Rigidbody2D rb;
+    private Vector2 playerDirection;
+    private SpriteRenderer spriteRenderer;
+    private float showExclam = 0;
+    private bool hasShowedExclam = false;
 
-    Rigidbody2D rb;
-    SpriteRenderer spriteRenderer;
+    [Header("Bug")]
+    [SerializeField] private float avoidForce = 10f;
+    [SerializeField] private float bugMinDistance;
+    [SerializeField] private GameObject projecttile;
+    private float shotCooldwon;
+    private float nextShot;
+
+    [Header("Kardus")]
+    [SerializeField] private float kardusMinDistance;
+    [SerializeField] private float strikeForce = 10f;
+    private float waitTime;
+    private bool isStriking;
+
 
     public EnemyType EnemyType { get => enemyType; }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     private void FixedUpdate()
@@ -28,12 +56,15 @@ public class EnemyScript : MonoBehaviour
         if (detectPlayer.detectedObj.Count > 0)
         {
             bool avoidBombs = detectPlayer.detectedObj.Exists(obj => obj.GetComponent<BombScript>() != null);
-            Vector2 playerDirection = (detectPlayer.detectedObj[0].transform.position - transform.position).normalized;
-            Debug.Log("avoid : " + avoidBombs);
+            playerDirection = (detectPlayer.detectedObj[0].transform.position - transform.position).normalized;
+            float distance = Vector2.Distance(transform.position, detectPlayer.detectedObj[0].transform.position);
 
-            if (this.enemyType == EnemyType.Bug)
+            //Untuk monster serangga
+            if (enemyType == EnemyType.Bug)
             {
-                float distance = Vector2.Distance(transform.position, detectPlayer.detectedObj[0].transform.position);
+                // projectile.Initialize();
+
+                //To avoid bombs
                 if (avoidBombs)
                 {
                     Vector2 bombDirection = (detectPlayer.detectedObj.Find(obj => obj.GetComponent<BombScript>() != null).transform.position - transform.position).normalized;
@@ -52,17 +83,55 @@ public class EnemyScript : MonoBehaviour
                     }
                 }
 
-                if (distance > minDistance)
+                //For reaching the player
+                if (distance > bugMinDistance)
                 {
                     rb.AddForce(playerDirection * (movSpeed * 3f) * Time.deltaTime);
                 }
-                else if (distance < minDistance - 0.1f)
+                else if (distance < bugMinDistance - 0.1f)
                 {
-                    rb.AddForce(playerDirection * -(movSpeed * 3f) * Time.deltaTime);
+                    rb.AddForce(playerDirection * -(movSpeed * 2f) * Time.deltaTime);
                 }
                 else
                 {
+                    IsMoving = false;
                     rb.velocity = Vector2.zero; // Stop the enemy's movement by setting its velocity to zero
+                }
+                Rotation();
+
+                if (Time.time > nextShot)
+                {
+                    GameObject launchedProjetile = Instantiate(projecttile, transform.position, Quaternion.identity);
+                    Rigidbody2D rbp = launchedProjetile.GetComponent<Rigidbody2D>();
+                    rbp.AddForce(playerDirection * 2, ForceMode2D.Impulse);
+                    Debug.Log(playerDirection);
+                    shotCooldwon = Random.Range(4, 8);
+                    nextShot = Time.time + shotCooldwon;
+                }
+            }
+
+            //Untuk monster Kardus
+            else if (enemyType == EnemyType.Kardus)
+            {
+                if (distance > kardusMinDistance && !isStriking)
+                {
+                    IsMoving = true;
+                    rb.AddForce(playerDirection * (movSpeed * 3f) * Time.deltaTime);
+                }
+                else if (distance < kardusMinDistance)
+                {
+                    if (!isStriking)
+                    {
+                        isStriking = true;
+                        rb.velocity = Vector2.zero;
+                        IsMoving = false;
+                        PrepareStrike();
+                    }
+                }
+                else
+                {
+                    IsMoving = false;
+                    rb.velocity = Vector2.zero;
                 }
             }
             else
@@ -70,21 +139,51 @@ public class EnemyScript : MonoBehaviour
                 rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
             }
 
+            // Distance check between enemies
+            Collider2D[] nearbyEnemies = Physics2D.OverlapCircleAll(transform.position, 10f);
+            foreach (Collider2D enemyCollider in nearbyEnemies)
+            {
+                if (enemyCollider != null && enemyCollider.gameObject != gameObject && enemyCollider.CompareTag("Enemy"))
+                {
+                    Vector2 directionToEnemy = (enemyCollider.transform.position - transform.position).normalized;
+                    float distanceToEnemy = Vector2.Distance(transform.position, enemyCollider.transform.position);
 
-            if (playerDirection.x > 0)
-            {
-                spriteRenderer.flipX = false;
+                    if (distanceToEnemy < 5)
+                    {
+                        rb.AddForce(-directionToEnemy * 3 * Time.deltaTime, ForceMode2D.Force);
+                    }
+                }
             }
-            else if (playerDirection.x < 0)
+
+            Rotation();
+        }
+    }
+
+    private void Update()
+    {
+        if (detectPlayer.EnemyDetected == true)
+        {
+            if (!hasShowedExclam)
             {
-                spriteRenderer.flipX = true;
+                hasShowedExclam = true;
+                showExclam = 2f;
             }
+        }
+
+        if (showExclam > 0)
+        {
+            exclam.enabled = true;
+            showExclam -= Time.deltaTime;
+        }
+        else
+        {
+            exclam.enabled = false;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag != "Enemy")
+        if (other.gameObject.tag != "Enemy" && this.enemyType != EnemyType.Bug)
         {
             Collider2D collider = other.collider;
             IDamageable damagAble = other.collider.GetComponent<IDamageable>();
@@ -96,5 +195,32 @@ public class EnemyScript : MonoBehaviour
                 damagAble.OnHit(damage, knockBack);
             }
         }
+    }
+
+    private void Rotation()
+    {
+        if (playerDirection.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (playerDirection.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+    }
+
+    private void PrepareStrike()
+    {
+        animator.SetTrigger("doStrike");
+    }
+
+    private void Strike()
+    {
+        rb.AddForce(playerDirection * (movSpeed * 4f) * Time.deltaTime, ForceMode2D.Impulse);
+    }
+
+    private void DoneStrike()
+    {
+        isStriking = false;
     }
 }

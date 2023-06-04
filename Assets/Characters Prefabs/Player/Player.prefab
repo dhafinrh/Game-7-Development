@@ -191,11 +191,12 @@ MonoBehaviour:
   RayDistance: 0.2
   throwablePrefabs: []
   activeThrowable: []
+  maxThrowables: 0
   throwPower: 2
   throwRange: 0.2
   throwDirection: {x: 1, y: 0.6}
   arrowAim: {fileID: 0}
-  timer: 5
+  throwCoolDown: 0
   OnCoolDown:
     m_PersistentCalls:
       m_Calls: []
@@ -217,6 +218,9 @@ MonoBehaviour:
   health: 10
   dmgTextPrefab: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
   dmgText: {fileID: 1011127707723379103, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
+  colorHex: 
+  dropChance: 0
+  coinPrefab: {fileID: 0}
   OnStart:
     m_PersistentCalls:
       m_Calls: []
@@ -336,7 +340,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0008704029, y: 0}
+  m_Offset: {x: 0.019448906, y: 0.024771348}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -347,7 +351,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.27, y: 0.23}
+  m_Size: {x: 0.30715698, y: 0.2795427}
   m_EdgeRadius: 0
 --- !u!114 &4807813881315340925
 MonoBehaviour:
@@ -366,6 +370,7 @@ MonoBehaviour:
   amplitude: 0.2
   frequention: 0.1
   shakeTime: 0.25
+  hitback: 0
 --- !u!1 &7316473299516597065
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,11 +13,12 @@ public class SwordScript : MonoBehaviour
     [SerializeField] private float amplitude;
     [SerializeField] private float frequention;
     [SerializeField] private float shakeTime;
+    [SerializeField] private float hitback;
 
     private void Start()
     {
-        rightAttackOffset = transform.localPosition;
         swordCollider = GetComponent<Collider2D>();
+        rightAttackOffset = transform.localPosition;
     }
 
     public void AttackRight()
@@ -53,6 +54,12 @@ public class SwordScript : MonoBehaviour
             {
                 Debug.LogWarning("Collider does not implement IDamagable");
             }
+        }
+
+        if (other.CompareTag("Bomb"))
+        {
+            Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+            rb.AddForce(-transform.position * hitback, ForceMode2D.Impulse);
         }
     }
 }

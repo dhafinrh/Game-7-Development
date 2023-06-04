@@ -6,6 +6,10 @@ public class DetectPlayer : MonoBehaviour
 {
     public List<Collider2D> detectedObj = new List<Collider2D>();
     [SerializeField] private Collider2D detectCol;
+    bool enemyDetected;
+
+    public bool EnemyDetected { get => enemyDetected; }
+
     void OnEnable()
     {
         detectCol.GetComponent<Collider2D>();
@@ -14,7 +18,10 @@ public class DetectPlayer : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
+        {
             detectedObj.Add(other);
+            enemyDetected = true;
+        }
 
         if (other.GetComponent<BombScript>() != null)
         {

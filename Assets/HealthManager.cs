@@ -52,6 +52,8 @@ public class HealthManager : MonoBehaviour, IDamageable
     [SerializeField] private GameObject dmgTextPrefab;
     [SerializeField] private TMP_Text dmgText;
     [SerializeField] private string colorHex;
+    [SerializeField] private float dropChance;
+    [SerializeField] private GameObject coinPrefab;
     [SerializeField] private UnityEvent<float> OnStart;
     [SerializeField] private UnityEvent<float> OnHitUpdate;
 
@@ -80,6 +82,13 @@ public class HealthManager : MonoBehaviour, IDamageable
     {
         enemyCollider.enabled = false;
         animator.SetTrigger("Dead");
+
+        dropChance = 0.5f;
+
+        if (Random.value <= dropChance)
+        {
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     public void Damage()
