@@ -454,6 +454,10 @@ MonoBehaviour:
   projecttile: {fileID: 2428689397070088759, guid: f234fcede23456b4389b326be582c0cf, type: 3}
   kardusMinDistance: 0
   strikeForce: 10
+  puddleProjectile: {fileID: 0}
+  enablePatrol: 1
+  patrolTime: 5
+  patrolSpeed: 3
 --- !u!95 &4207521652355015947
 Animator:
   serializedVersion: 5

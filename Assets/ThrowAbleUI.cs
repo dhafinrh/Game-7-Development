@@ -6,33 +6,35 @@ using TMPro;
 
 public class ThrowAbleUI : MonoBehaviour
 {
-    [SerializeField] private Image coolDownImg;
-    [SerializeField] private TMP_Text cooldownText;
-    private float cooldownDuration = 0;
-    private float currentCooldown = 0;
+    [SerializeField] private Image throwCoolDownImg;
+    [SerializeField] private TMP_Text throwCooldownText;
+   
+    private float throwCooldownDuration = 0;
+    private float currentThrowCooldown = 0;
+   
 
     private void Update()
     {
-        if (currentCooldown > 0f)
+        if (currentThrowCooldown > 0f)
         {
-            currentCooldown -= Time.deltaTime;
-            if (currentCooldown < 0f)
-                currentCooldown = 0f;
+            currentThrowCooldown -= Time.deltaTime;
+            if (currentThrowCooldown < 0f)
+                currentThrowCooldown = 0f;
 
-            coolDownImg.fillAmount = 1f - (currentCooldown / cooldownDuration);
+            throwCoolDownImg.fillAmount = 1f - (currentThrowCooldown / throwCooldownDuration);
 
-            cooldownText.text = currentCooldown.ToString("F1");
+            throwCooldownText.text = currentThrowCooldown.ToString("F1");
         }
         else
         {
-            cooldownText.enabled = false;
+            throwCooldownText.enabled = false;
         }
     }
 
-    public void StartCooldown(float cooldown)
+    public void StartThrowCooldown(float cooldown)
     {
-        cooldownDuration = cooldown;
-        currentCooldown = cooldown;
-        cooldownText.enabled = true;
+        throwCooldownDuration = cooldown;
+        currentThrowCooldown = cooldown;
+        throwCooldownText.enabled = true;
     }
 }

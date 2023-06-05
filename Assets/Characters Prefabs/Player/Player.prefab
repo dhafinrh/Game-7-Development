@@ -123,7 +123,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &7109330351791961434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,41 +166,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d617b404e8fe4349a5a2122b83110f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthManager: {fileID: 5273386491257249003}
   swordScript: {fileID: 4807813881315340925}
   moveSpeed: 1
   moveDrag: 15
   stopDrag: 25
   idleFriction: 0.9
-  collisionOffset: 0.05
-  movementFilter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
+  collisionOffset: 1
   RayPoint: {fileID: 9208035988566907879}
   GrabPoint: {fileID: 2962376364684812227}
-  RayDistance: 0.2
-  throwablePrefabs: []
-  activeThrowable: []
-  maxThrowables: 0
+  RayDistance: 0.1
+  throwablePrefabs:
+  - {fileID: 2428689397070088759, guid: ec1aae18b25609d42aaece26acaec2ac, type: 3}
+  - {fileID: 2428689397070088759, guid: 657bee3cd0366a44c9240acf1e999d8d, type: 3}
+  - {fileID: 2428689397070088759, guid: 6f455104d2aca854bac4f2c3e25b3a2c, type: 3}
+  activeThrowable:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  maxThrowables: 100
   throwPower: 2
   throwRange: 0.2
   throwDirection: {x: 1, y: 0.6}
   arrowAim: {fileID: 0}
-  throwCoolDown: 0
-  OnCoolDown:
+  throwCoolDown: 5
+  OnThrowCoolDown:
     m_PersistentCalls:
-      m_Calls: []
-  isCursorVisible: 0
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ThrowAbleUI, Assembly-CSharp
+        m_MethodName: StartThrowCooldown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ThrowAbleUI, Assembly-CSharp
+        m_MethodName: StartThrowCooldown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ThrowAbleUI, Assembly-CSharp
+        m_MethodName: StartThrowCooldown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  maxHeal: 5
+  healAmount: 10
+  healCoolDown: 15
+  onHealCoolDown:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameplayUI, Assembly-CSharp
+        m_MethodName: StartHealCooldown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  isCursorVisible: 1
+  slipperyDuration: 0.5
 --- !u!114 &5273386491257249003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,9 +261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf0168a6b6f5824ebedeaa3759ea42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   isInvincibleEnabled: 1
   invincibleTime: 1
-  health: 10
+  health: 50
   dmgTextPrefab: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
   dmgText: {fileID: 1011127707723379103, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
   colorHex: 
@@ -223,10 +272,34 @@ MonoBehaviour:
   coinPrefab: {fileID: 0}
   OnStart:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameplayUI, Assembly-CSharp
+        m_MethodName: MaxHealth
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHitUpdate:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameplayUI, Assembly-CSharp
+        m_MethodName: UpdateHealthBar
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!50 &3513046305493816555
 Rigidbody2D:
   serializedVersion: 4
@@ -340,7 +413,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.019448906, y: 0.024771348}
+  m_Offset: {x: 0.04049705, y: 0.023962662}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -351,7 +424,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.30715698, y: 0.2795427}
+  m_Size: {x: 0.30715698, y: 0.27792534}
   m_EdgeRadius: 0
 --- !u!114 &4807813881315340925
 MonoBehaviour:
@@ -365,12 +438,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761f0ed9cfa667f4a8e1ef14e4856061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 5
   knockbackForce: 1
   amplitude: 0.2
   frequention: 0.1
   shakeTime: 0.25
-  hitback: 0
+  hitback: 10
 --- !u!1 &7316473299516597065
 GameObject:
   m_ObjectHideFlags: 0

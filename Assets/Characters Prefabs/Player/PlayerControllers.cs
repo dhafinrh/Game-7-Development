@@ -6,17 +6,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-//Controller untuk pergerakan, animasi, dan serangan 
 public class PlayerControllers : MonoBehaviour
 {
     [Header("Moving Properties")]
+    [SerializeField] private HealthManager healthManager;
     [SerializeField] SwordScript swordScript;
     [SerializeField] private float moveSpeed = 1f; // Kecepatan pergerakan karakter
     [SerializeField] private float moveDrag = 15f;
     [SerializeField] private float stopDrag = 25f;
     [SerializeField] private float idleFriction;
     [SerializeField] private float collisionOffset = 0.05f; // Jarak tambahan untuk menghindari tabrakan
-    [SerializeField] private ContactFilter2D movementFilter; // Filter yang digunakan untuk mendeteksi tabrakan saat bergerak
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
@@ -58,16 +57,28 @@ public class PlayerControllers : MonoBehaviour
     [SerializeField] Vector2 throwDirection = new Vector2(1, 0);
     [SerializeField] Image arrowAim;
     [SerializeField] private float throwCoolDown;
-    [SerializeField] private UnityEvent<float> OnCoolDown;
+    [SerializeField] private UnityEvent<float> OnThrowCoolDown;
     private int currentThrowablesLeft;
     private int currentThrowableIndex = 0;
     private GameObject currentThrowable;
     bool isAiming = false;
     bool isThrowCoolDown;
-    float timer;
+    float throwTimer;
 
-    [Header("Cursor Properties")]
+    [Header("Other Properties")]
+    [SerializeField] private int maxHeal;
+    [SerializeField] private float healAmount;
+    [SerializeField] private float healCoolDown;
+    [SerializeField] private UnityEvent<float> onHealCoolDown;
+    private int currentHealLeft;
+    [Header("Other Properties")]
     [SerializeField] private bool isCursorVisible = false;
+    [SerializeField] private float slipperyDuration = 1f;
+    private bool isSlippery = false;
+    private float slipperyTimer = 1f;
+    private float healTimer = 0f;
+    private bool hasHealed = false;
+
 
     private void Start()
     {
@@ -82,43 +93,8 @@ public class PlayerControllers : MonoBehaviour
         layerIndex = LayerMask.NameToLayer(layerName: "GrabAble");
 
         currentThrowablesLeft = maxThrowables;
+        currentHealLeft = maxHeal;
     }
-
-    // private void Update()
-    // {
-    //     if (movementInput != Vector2.zero) // Memeriksa apakah ada input pergerakan
-    //     {
-    //         bool success = TryMove(movementInput); // Mencoba bergerak ke arah yang diinginkan
-
-    //         if (!success)
-    //         {
-    //             success = TryMove(new Vector2(movementInput.x, 0)); // Jika pergerakan terhalang, coba bergerak secara horizontal
-    //         }
-
-    //         if (!success)
-    //         {
-    //             success = TryMove(new Vector2(0, movementInput.y)); // Jika pergerakan horizontal terhalang, coba bergerak secara vertikal
-    //         }
-
-    //         animator.SetBool("isMoving", success);
-    //     }
-    //     else
-    //     {
-    //         animator.SetBool("isMoving", false);
-    //     }
-
-    //     //Mengecek arah gerakan untuk disesuaikan dengan animasi jalan
-    //     if (movementInput.x < 0)
-    //     {
-    //         spriteRenderer.flipX = true;
-    //         swordScript.AttackLeft();
-    //     }
-    //     else if (movementInput.x > 0)
-    //     {
-    //         spriteRenderer.flipX = false;
-    //         swordScript.AttackRight();
-    //     }
-    // }
 
     private void Update()
     {
@@ -129,17 +105,25 @@ public class PlayerControllers : MonoBehaviour
             Cursor.visible = isCursorVisible;
         }
 
-        if (timer > 0)
+        if (healTimer > 0)
         {
-            timer -= Time.deltaTime;
-            if (timer <= 0f)
+            healTimer -= Time.deltaTime;
+            if (healTimer <= 0f)
+            {
+                hasHealed = false;
+            }
+        }
+
+        if (throwTimer > 0)
+        {
+            throwTimer -= Time.deltaTime;
+            if (throwTimer <= 0f)
             {
                 isThrowCoolDown = false;
             }
         }
 
         //Choosing Throwable
-        // Switch throwables based on player's input (1, 2, 3)
         if (Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             SetCurrentThrowableIndex(0);
@@ -151,6 +135,10 @@ public class PlayerControllers : MonoBehaviour
         else if (Keyboard.current.digit3Key.wasPressedThisFrame)
         {
             SetCurrentThrowableIndex(2);
+        }
+        else if (Keyboard.current.digit4Key.wasPressedThisFrame)
+        {
+            HealUp(healAmount);
         }
 
         //Throw
@@ -231,7 +219,6 @@ public class PlayerControllers : MonoBehaviour
                 if (canvasPickUp != null && grabbedObject == null)
                     canvasPickUp.enabled = true;
 
-                Debug.Log("Object with GrabAble layer hit!");
                 if (Keyboard.current.spaceKey.wasReleasedThisFrame && grabbedObject == null)
                 {
                     grabbedObject = collider.gameObject;
@@ -251,51 +238,34 @@ public class PlayerControllers : MonoBehaviour
             grabbedObject = null;
         }
 
-        // Debug.DrawRay(RayPoint.position, lastMovementDirection * RayDistance, Color.red);
         float overlapRadius = 1;
         Collider2D[] overlappedColliders = Physics2D.OverlapCircleAll(transform.position, overlapRadius);
 
-        // Visualize the overlapped colliders
-        foreach (Collider2D collider in overlappedColliders)
+        if (isSlippery)
         {
-            Debug.DrawLine(transform.position, collider.transform.position, Color.red);
+            slipperyTimer -= Time.fixedDeltaTime;
+            if (slipperyTimer <= 0f)
+            {
+                RemoveSlipperyEffect();
+            }
         }
     }
 
-    // private bool TryMove(Vector2 direction)
-    // {
-    //     if (direction != Vector2.zero)
-    //     {
-    //         Vector2 targetPosition = rb.position + direction * moveSpeed * Time.fixedDeltaTime;
-
-    //         // Check for collisions using OverlapCircleAll
-    //         Collider2D[] colliders = Physics2D.OverlapCircleAll(targetPosition, collisionOffset, movementFilter.layerMask);
-
-    //         // Check if any of the colliders are not triggers and handle collisions
-    //         foreach (Collider2D collider in colliders)
-    //         {
-    //             if (!collider.isTrigger)
-    //             {
-    //                 // Calculate the safe movement direction to resolve collision
-    //                 Vector2 safeDirection = (targetPosition - rb.position).normalized;
-
-    //                 // Calculate the safe target position to resolve collision
-    //                 targetPosition = rb.position + safeDirection * moveSpeed * Time.fixedDeltaTime;
-
-    //                 break; // Stop checking other colliders
-    //             }
-    //         }
-
-    //         rb.MovePosition(targetPosition); // Move the character to the safe target position
-
-    //         return true;
-    //     }
-    //     else
-    //     {
-    //         // Return false if there is no movement direction
-    //         return false;
-    //     }
-    // }
+    public void HealUp(float healAmount)
+    {
+        if (currentHealLeft > 0)
+        {
+            currentHealLeft--;
+            
+            if (healthManager.Health < healthManager.maxHealth)
+            {
+                healthManager.Health += healAmount;
+                healTimer = healCoolDown;
+                onHealCoolDown.Invoke(healCoolDown);
+                healthManager.OnHitUpdateUI();
+            }
+        }
+    }
 
     private void SetCurrentThrowableIndex(int index)
     {
@@ -351,8 +321,6 @@ public class PlayerControllers : MonoBehaviour
         //Defining the actual throwing direction
         Vector2 arrowAimDirection = closestDirection;
 
-        Debug.DrawRay(transform.position, arrowAimDirection * throwRange, Color.blue);
-
         // Calculate the position and rotation of the aim arrow based on the throwDirection
         Vector2 arrowEndPosition = (Vector2)transform.position + arrowAimDirection * throwRange;
         arrowAim.transform.position = new Vector2(arrowEndPosition.x, arrowEndPosition.y - 0.1f);
@@ -360,7 +328,6 @@ public class PlayerControllers : MonoBehaviour
         float throwAngle = Mathf.Atan2(arrowAimDirection.y, arrowAimDirection.x) * Mathf.Rad2Deg;
         arrowAim.transform.rotation = Quaternion.AngleAxis(throwAngle, Vector3.forward);
     }
-
 
     private void Throw()
     {
@@ -378,8 +345,8 @@ public class PlayerControllers : MonoBehaviour
             throwableRb.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
 
             isThrowCoolDown = true;
-            OnCoolDown.Invoke(throwCoolDown);
-            timer = throwCoolDown;
+            OnThrowCoolDown.Invoke(throwCoolDown);
+            throwTimer = throwCoolDown;
         }
     }
 
@@ -395,34 +362,46 @@ public class PlayerControllers : MonoBehaviour
         {
             Vector2 targetPosition = rb.position + direction * moveSpeed * Time.fixedDeltaTime;
 
-            RaycastHit2D[] hits = Physics2D.BoxCastAll(rb.position, boxCollider.size, 0f, direction, moveSpeed * Time.fixedDeltaTime, movementFilter.layerMask);
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(targetPosition, boxCollider.size + new Vector2(0.1f, 0.1f), 0f);
 
-            foreach (RaycastHit2D hit in hits)
+            if (isSlippery)
             {
-                if (!hit.collider.isTrigger)
+                targetPosition = rb.position + direction * moveSpeed * 2.5f * Time.fixedDeltaTime;
+            }
+
+            else
+            {
+                foreach (Collider2D collider in colliders)
                 {
-                    Vector2 safeDirection = Vector2.zero;
+                    if (collider.gameObject.layer == LayerMask.NameToLayer("TileMap") && !collider.isTrigger)
+                    {
+                        Vector2 safeDirection = Vector2.zero;
 
-                    if (direction.x > 0f)
-                        safeDirection = Vector2.left;
-                    else if (direction.x < 0f)
-                        safeDirection = Vector2.right;
-                    else if (direction.y > 0f)
-                        safeDirection = Vector2.down;
-                    else if (direction.y < 0f)
-                        safeDirection = Vector2.up;
+                        if (direction.x > 0f)
+                            safeDirection = Vector2.left;
+                        else if (direction.x < 0f)
+                            safeDirection = Vector2.right;
+                        else if (direction.y > 0f)
+                            safeDirection = Vector2.down;
+                        else if (direction.y < 0f)
+                            safeDirection = Vector2.up;
 
-                    targetPosition = rb.position + safeDirection * moveSpeed * Time.fixedDeltaTime;
-                    break;
+                        targetPosition = rb.position + safeDirection * moveSpeed * Time.fixedDeltaTime;
+
+                        break;
+                    }
                 }
             }
 
-            rb.MovePosition(targetPosition);
+            rb.MovePosition(targetPosition); // Move the character to the safe target position
 
             return true;
         }
-
-        return false;
+        else
+        {
+            // Return false if there is no movement direction
+            return false;
+        }
     }
 
     void OnMove(InputValue movementValue)
@@ -438,13 +417,14 @@ public class PlayerControllers : MonoBehaviour
             CancelAim();
     }
 
-    public void LockMovement()
+    public void ApplySlipperyEffect()
     {
-        canMove = false;
+        isSlippery = true;
+        slipperyTimer = slipperyDuration;
     }
 
-    public void UnlockMovement()
+    private void RemoveSlipperyEffect()
     {
-        canMove = true;
+        isSlippery = false;
     }
 }

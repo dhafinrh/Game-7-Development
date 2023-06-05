@@ -4,25 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameplayUI : MonoBehaviour
+public class HealUI : MonoBehaviour
 {
-    private float maxHealth;
-    [SerializeField] private Image healthBackground;
-    [SerializeField] private Image healthBar;
     [SerializeField] private Image healCoolDownImg;
     [SerializeField] private TMP_Text healCooldownText;
-    [SerializeField] private TMP_Text totalCoinText;
     private float healCooldownDuration = 0;
     private float currentHealCooldown = 0;
-    private Camera mainCamera;
-    private int totalCoin;
-
-    public void OnEnable()
-    {
-        totalCoin = PlayerPrefs.GetInt("TotalCoins", 0);
-        UpdateCoinCount(totalCoin);
-    }
-
     void Update()
     {
         if (currentHealCooldown > 0f)
@@ -40,27 +27,11 @@ public class GameplayUI : MonoBehaviour
             healCooldownText.enabled = false;
         }
     }
-
+    
     public void StartHealCooldown(float cooldown)
     {
         healCooldownDuration = cooldown;
         currentHealCooldown = cooldown;
         healCooldownText.enabled = true;
     }
-
-    public void MaxHealth(float health)
-    {
-        maxHealth = health;
-    }
-
-    public void UpdateHealthBar(float Health)
-    {
-        healthBar.fillAmount = Health / maxHealth;
-    }
-
-    public void UpdateCoinCount(int currentCoin)
-    {
-        totalCoinText.text = currentCoin.ToString();
-    }
-
 }

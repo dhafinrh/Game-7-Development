@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
-  damage: 1
+  damage: 3
   knockBackForce: 5
   detectPlayer: {fileID: 8246428446016058634}
   exclam: {fileID: 3423858224684581041}
@@ -454,6 +454,10 @@ MonoBehaviour:
   projecttile: {fileID: 2428689397070088759, guid: f234fcede23456b4389b326be582c0cf, type: 3}
   kardusMinDistance: 1
   strikeForce: 10
+  puddleProjectile: {fileID: 0}
+  enablePatrol: 1
+  patrolTime: 2
+  patrolingSpeed: 75
 --- !u!95 &4207521652355015947
 Animator:
   serializedVersion: 5
@@ -486,6 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf0168a6b6f5824ebedeaa3759ea42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   isInvincibleEnabled: 1
   invincibleTime: 1
   health: 18

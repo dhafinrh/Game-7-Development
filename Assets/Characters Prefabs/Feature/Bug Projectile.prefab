@@ -146,5 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce350b22372e7e47affb45b729a1f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 3
   explosionForce: 3
   defaultDamage: 1
+  puddlePrefab: {fileID: 0}

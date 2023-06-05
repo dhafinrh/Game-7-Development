@@ -14,11 +14,14 @@ public class SwordScript : MonoBehaviour
     [SerializeField] private float frequention;
     [SerializeField] private float shakeTime;
     [SerializeField] private float hitback;
+    private bool inBattle;
+    bool enemyDetected = false;
 
     private void Start()
     {
         swordCollider = GetComponent<Collider2D>();
         rightAttackOffset = transform.localPosition;
+        WalkMode();
     }
 
     public void AttackRight()
@@ -35,12 +38,36 @@ public class SwordScript : MonoBehaviour
     {
         CameraShake.Instance.ShakeEffect(frequention, amplitude, shakeTime);
     }
+    public void BattleMode()
+    {
+        CameraShake.Instance.BattleMode();
+    }
+
+    public void WalkMode()
+    {
+        CameraShake.Instance.WalkMode();
+    }
+
+    void CheckForEnemies()
+    {
+        WalkMode();
+        enemyDetected = false;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         IDamageable damagAbleObject = other.GetComponent<IDamageable>();
         if (other.CompareTag("Enemy"))
         {
+            if (!enemyDetected)
+            {
+                BattleMode();
+            }
+
+            CancelInvoke("CheckForEnemies");
+            enemyDetected = true;
+            Invoke("CheckForEnemies", 10);
+
             if (damagAbleObject != null)
             {
                 ShakeAttack();

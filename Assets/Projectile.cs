@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private EnemyType enemyType;
     [SerializeField] private float explosionForce = 10f;
     [SerializeField] private float defaultDamage = 0.1f;
+    [SerializeField] private GameObject puddlePrefab;
     IDamageable damageableObject;
     int crit;
     bool hasCollide = false;
@@ -15,7 +17,11 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             hasCollide = true;
-            Explode(collision.gameObject);
+
+            if (enemyType == EnemyType.Bug)
+                BugExplode(collision.gameObject);
+            else if (enemyType == EnemyType.Botol)
+                PuddleSpawn(collision.transform);
         }
     }
 
@@ -25,6 +31,11 @@ public class Projectile : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void Update()
+    {
+
     }
 
     private void OnEnable()
@@ -39,7 +50,7 @@ public class Projectile : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    private void Explode(GameObject player)
+    private void BugExplode(GameObject player)
     {
         if (player != null)
         {
@@ -63,5 +74,10 @@ public class Projectile : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void PuddleSpawn(Transform playerPos)
+    {
+        Instantiate(puddlePrefab, playerPos.transform.position, Quaternion.identity);
     }
 }

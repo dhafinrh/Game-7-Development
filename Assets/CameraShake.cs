@@ -42,12 +42,36 @@ public class CameraShake : MonoBehaviour
             if (shakeTimer <= 0f)
             {
                 cinemachineBasicMultiChannelPerlin.m_AmplitudeGain =
-                Mathf.Lerp(initialAmplitude, 0f, 1-((shakeTimer / shakeTimerTotal)));
+                Mathf.Lerp(initialAmplitude, 0f, 1 - ((shakeTimer / shakeTimerTotal)));
 
                 cinemachineBasicMultiChannelPerlin.m_FrequencyGain =
-                Mathf.Lerp(initialFreq, 0f, 1-((shakeTimer / shakeTimerTotal)));
+                Mathf.Lerp(initialFreq, 0f, 1 - ((shakeTimer / shakeTimerTotal)));
 
             }
         }
     }
+
+    public void BattleMode()
+    {
+        StartCoroutine(TransformOrthographicSize(0.9f, 1.28f, 1f));
+    }
+
+    public void WalkMode()
+    {
+        StartCoroutine(TransformOrthographicSize(1.28f, 0.9f, 1f));
+    }
+
+    private IEnumerator TransformOrthographicSize(float startValue, float endValue, float transitionTime)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < transitionTime)
+        {
+            float currentValue = Mathf.Lerp(startValue, endValue, elapsedTime / transitionTime);
+            cinemachineVirtualCamera.m_Lens.OrthographicSize = currentValue;
+            yield return null;
+            elapsedTime += Time.deltaTime;
+        }
+        cinemachineVirtualCamera.m_Lens.OrthographicSize = endValue;
+    }
+
 }

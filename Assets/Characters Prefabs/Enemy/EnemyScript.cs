@@ -40,6 +40,16 @@ public class EnemyScript : MonoBehaviour
     private float waitTime;
     private bool isStriking;
 
+    [Header("Bottle")]
+    [SerializeField] private GameObject puddleProjectile;
+
+    [Header("Patrol")]
+    [SerializeField] private bool enablePatrol = true;
+    [SerializeField] private float patrolTime = 3f;
+    [SerializeField] private float patrolingSpeed = 75f;
+    private bool isPatrolling = false;
+    private float patrolTimer = 0f;
+    private Vector2 patrolDirection;
 
     public EnemyType EnemyType { get => enemyType; }
 
@@ -49,6 +59,13 @@ public class EnemyScript : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        patrolDirection = Random.insideUnitCircle.normalized;
+
+        if (enablePatrol)
+        {
+            isPatrolling = true;
+            patrolTimer = patrolTime;
+        }
     }
 
     private void FixedUpdate()
@@ -59,11 +76,9 @@ public class EnemyScript : MonoBehaviour
             playerDirection = (detectPlayer.detectedObj[0].transform.position - transform.position).normalized;
             float distance = Vector2.Distance(transform.position, detectPlayer.detectedObj[0].transform.position);
 
-            //Untuk monster serangga
+            //For Bug type of enemy
             if (enemyType == EnemyType.Bug)
             {
-                // projectile.Initialize();
-
                 //To avoid bombs
                 if (avoidBombs)
                 {
@@ -104,14 +119,13 @@ public class EnemyScript : MonoBehaviour
                     GameObject launchedProjetile = Instantiate(projecttile, transform.position, Quaternion.identity);
                     Rigidbody2D rbp = launchedProjetile.GetComponent<Rigidbody2D>();
                     rbp.AddForce(playerDirection * 2, ForceMode2D.Impulse);
-                    Debug.Log(playerDirection);
                     shotCooldwon = Random.Range(4, 8);
                     nextShot = Time.time + shotCooldwon;
                 }
             }
-
-            //Untuk monster Kardus
+            //For Kardus type of enemy
             else if (enemyType == EnemyType.Kardus)
+            //For Bottle type of enemy
             {
                 if (distance > kardusMinDistance && !isStriking)
                 {
@@ -134,9 +148,18 @@ public class EnemyScript : MonoBehaviour
                     rb.velocity = Vector2.zero;
                 }
             }
-            else
+            else if (enemyType == EnemyType.Botol)
             {
                 rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
+
+                if (Time.time > nextShot)
+                {
+                    GameObject launchedPuddle = Instantiate(puddleProjectile, transform.position, Quaternion.identity);
+                    Rigidbody2D rbp = launchedPuddle.GetComponent<Rigidbody2D>();
+                    rbp.AddForce(playerDirection * 2, ForceMode2D.Impulse);
+                    shotCooldwon = Random.Range(6, 8);
+                    nextShot = Time.time + shotCooldwon;
+                }
             }
 
             // Distance check between enemies
@@ -157,7 +180,13 @@ public class EnemyScript : MonoBehaviour
 
             Rotation();
         }
+
+        else if (isPatrolling)
+        {
+            Patrol();
+        }
     }
+
 
     private void Update()
     {
@@ -197,6 +226,22 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    private void Patrol()
+    {
+        patrolTimer -= Time.deltaTime;
+
+        if (patrolTimer <= 0f)
+        {
+            patrolDirection = -patrolDirection;
+            patrolTimer = patrolTime;
+        }
+
+        rb.AddForce(patrolDirection * patrolingSpeed * Time.deltaTime);
+        IsMoving = true;
+
+        Rotation();
+    }
+
     private void Rotation()
     {
         if (playerDirection.x > 0)
@@ -216,7 +261,7 @@ public class EnemyScript : MonoBehaviour
 
     private void Strike()
     {
-        rb.AddForce(playerDirection * (movSpeed * 4f) * Time.deltaTime, ForceMode2D.Impulse);
+        rb.AddForce(playerDirection * (movSpeed * 8f) * Time.deltaTime, ForceMode2D.Impulse);
     }
 
     private void DoneStrike()

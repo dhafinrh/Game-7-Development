@@ -25,6 +25,7 @@ public class HealthManager : MonoBehaviour, IDamageable
     }
     bool invincible;
     float invincibleTimeElapsed = 0f;
+    public float maxHealth;
     public float Health
     {
         set
@@ -55,7 +56,7 @@ public class HealthManager : MonoBehaviour, IDamageable
     [SerializeField] private float dropChance;
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private UnityEvent<float> OnStart;
-    [SerializeField] private UnityEvent<float> OnHitUpdate;
+    [SerializeField] UnityEvent<float> OnHitUpdate;
 
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class HealthManager : MonoBehaviour, IDamageable
         enemyCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         OnStart.Invoke(Health);
+        maxHealth = health;
     }
 
     private void FixedUpdate()
@@ -160,5 +162,10 @@ public class HealthManager : MonoBehaviour, IDamageable
         {
             textComponent.color = Color.white;
         }
+    }
+
+    public void OnHitUpdateUI()
+    {
+        OnHitUpdate.Invoke(Health);
     }
 }
