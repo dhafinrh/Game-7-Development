@@ -101,7 +101,7 @@ public class PlayerControllers : MonoBehaviour
         // Toggle cursor visibility on pressing the Escape key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            isCursorVisible = false;
+            isCursorVisible = true;
             Cursor.visible = isCursorVisible;
         }
 

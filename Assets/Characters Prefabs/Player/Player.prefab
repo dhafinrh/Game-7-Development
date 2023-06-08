@@ -230,7 +230,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   maxHeal: 5
-  healAmount: 10
+  healAmount: 25
   healCoolDown: 15
   onHealCoolDown:
     m_PersistentCalls:

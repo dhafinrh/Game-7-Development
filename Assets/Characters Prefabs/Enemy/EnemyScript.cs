@@ -246,11 +246,11 @@ public class EnemyScript : MonoBehaviour
     {
         if (playerDirection.x > 0)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = true;
         }
         else if (playerDirection.x < 0)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = false;
         }
     }
 

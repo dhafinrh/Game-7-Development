@@ -11,7 +11,7 @@ public class PlayManager : MonoBehaviour
 
     private void Start()
     {
-       playerCoin = PlayerPrefs.GetInt("TotalCoins");
+        playerCoin = PlayerPrefs.GetInt("TotalCoins");
     }
 
     private void OnEnable()
@@ -37,6 +37,11 @@ public class PlayManager : MonoBehaviour
     public void Replay()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
     }
 
 }
