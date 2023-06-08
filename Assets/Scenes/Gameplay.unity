@@ -276,7 +276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.543
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.y
@@ -317,6 +317,10 @@ PrefabInstance:
     - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_Name
       value: Kardus (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bfe624def5d5444883546fc6031701, type: 3}
@@ -596,7 +600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.385
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.z
@@ -633,6 +637,10 @@ PrefabInstance:
     - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_Name
       value: Kardus (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bfe624def5d5444883546fc6031701, type: 3}
@@ -17193,7 +17201,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.9
+  orthographic size: 1.026431
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -18479,7 +18487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.351
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18516,6 +18524,10 @@ PrefabInstance:
     - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_Name
       value: Kardus (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bfe624def5d5444883546fc6031701, type: 3}
@@ -19088,7 +19100,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1527400120}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 0.9
+    OrthographicSize: 1.026431
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -19739,7 +19751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.543
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19780,6 +19792,10 @@ PrefabInstance:
     - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_Name
       value: Kardus (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bfe624def5d5444883546fc6031701, type: 3}
@@ -24103,7 +24119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.36
       objectReference: {fileID: 0}
     - target: {fileID: 1411367376492067018, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24137,9 +24153,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3423858224684581041, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_fontSize
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3423858224684581041, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4545442667086516171, guid: 43bfe624def5d5444883546fc6031701, type: 3}
       propertyPath: m_Name
       value: Kardus
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744712178936901898, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744712178936901898, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744712178936901898, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744712178936901898, guid: 43bfe624def5d5444883546fc6031701, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43bfe624def5d5444883546fc6031701, type: 3}
@@ -24841,7 +24881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1886610043
 Transform:
   m_ObjectHideFlags: 0
@@ -24991,7 +25031,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1960294839
 Transform:
   m_ObjectHideFlags: 0
@@ -25841,8 +25881,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1665907488}
     - target: {fileID: 5666688118729820379, guid: 45f4699772baa854eb239881087f80d1, type: 3}
+      propertyPath: healAmount
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5666688118729820379, guid: 45f4699772baa854eb239881087f80d1, type: 3}
       propertyPath: healCoolDown
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5666688118729820379, guid: 45f4699772baa854eb239881087f80d1, type: 3}
       propertyPath: maxThrowables

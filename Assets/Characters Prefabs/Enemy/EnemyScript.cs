@@ -6,6 +6,7 @@ using TMPro;
 public class EnemyScript : MonoBehaviour
 {
     [SerializeField] private EnemyType enemyType;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float damage = 1;
     [SerializeField] private float knockBackForce = 10f;
     [SerializeField] private DetectPlayer detectPlayer;
@@ -21,9 +22,8 @@ public class EnemyScript : MonoBehaviour
             animator.SetBool("isMoving", value);
         }
     }
-    private Rigidbody2D rb;
     private Vector2 playerDirection;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     private float showExclam = 0;
     private bool hasShowedExclam = false;
 
@@ -55,10 +55,7 @@ public class EnemyScript : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
         patrolDirection = Random.insideUnitCircle.normalized;
 
         if (enablePatrol)
@@ -130,7 +127,7 @@ public class EnemyScript : MonoBehaviour
                 if (distance > kardusMinDistance && !isStriking)
                 {
                     IsMoving = true;
-                    rb.AddForce(playerDirection * (movSpeed * 3f) * Time.deltaTime);
+                    rb.AddForce(playerDirection * (movSpeed * 4f) * Time.deltaTime);
                 }
                 else if (distance < kardusMinDistance)
                 {

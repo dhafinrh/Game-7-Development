@@ -579,11 +579,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 2
+  rb: {fileID: 7586285834882178899}
   damage: 2
   knockBackForce: 5
   detectPlayer: {fileID: 8246428446016058634}
   exclam: {fileID: 604837471110174322}
   movSpeed: 50
+  spriteRenderer: {fileID: 3002979711896817162}
   avoidForce: 10
   bugMinDistance: 0
   projecttile: {fileID: 2428689397070088759, guid: f234fcede23456b4389b326be582c0cf, type: 3}

@@ -351,7 +351,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.1433056, y: 0.23089214, z: -0.0038929423}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2876483999226042939}
   - {fileID: 1251036272878048744}
@@ -444,11 +444,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 3
+  rb: {fileID: 7586285834882178899}
   damage: 1
   knockBackForce: 5
   detectPlayer: {fileID: 8246428446016058634}
   exclam: {fileID: 6090287103134465395}
   movSpeed: 50
+  spriteRenderer: {fileID: 3002979711896817162}
   avoidForce: 750
   bugMinDistance: 1.5
   projecttile: {fileID: 2428689397070088759, guid: f234fcede23456b4389b326be582c0cf, type: 3}
@@ -457,7 +459,7 @@ MonoBehaviour:
   puddleProjectile: {fileID: 0}
   enablePatrol: 1
   patrolTime: 5
-  patrolSpeed: 3
+  patrolingSpeed: 75
 --- !u!95 &4207521652355015947
 Animator:
   serializedVersion: 5
@@ -490,6 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf0168a6b6f5824ebedeaa3759ea42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   isInvincibleEnabled: 1
   invincibleTime: 1
   health: 9
