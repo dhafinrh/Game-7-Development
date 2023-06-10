@@ -11,11 +11,21 @@ public class Projectile : MonoBehaviour
     IDamageable damageableObject;
     int crit;
     bool hasCollide = false;
+    SpriteRenderer projectile;
+
+    private void OnEnable()
+    {
+        StartCoroutine(DestroyBomb());
+        projectile = GetComponent<SpriteRenderer>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (projectile != null)
+                projectile.enabled = false;
+
             hasCollide = true;
 
             if (enemyType == EnemyType.Bug)
@@ -29,25 +39,15 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(this.gameObject);
+            Destroy(this.projectile);
         }
-    }
-
-    private void Update()
-    {
-
-    }
-
-    private void OnEnable()
-    {
-        StartCoroutine(DestroyBomb());
     }
 
     IEnumerator DestroyBomb()
     {
         yield return new WaitForSeconds(2f);
         if (!hasCollide)
-            Destroy(this.gameObject);
+            Destroy(this.projectile);
     }
 
     private void BugExplode(GameObject player)
@@ -72,7 +72,7 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(this.projectile);
         }
     }
 

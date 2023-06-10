@@ -57,10 +57,11 @@ public class HealthManager : MonoBehaviour, IDamageable
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private UnityEvent<float> OnStart;
     [SerializeField] UnityEvent<float> OnHitUpdate;
+    [SerializeField] UnityEvent<float> OnDie;
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         enemyCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         OnStart.Invoke(Health);
@@ -108,7 +109,10 @@ public class HealthManager : MonoBehaviour, IDamageable
         if (!invincible)
         {
             Health -= damage;
-            OnHitUpdate.Invoke(Health);
+            if (Health > 0)
+                OnHitUpdate.Invoke(Health);
+            else if (Health <= 0)
+                OnDie.Invoke(Health);
             rb.AddForce(knockBack, ForceMode2D.Impulse);
             TextDamage(damage, 0);
 
@@ -167,5 +171,6 @@ public class HealthManager : MonoBehaviour, IDamageable
     public void OnHitUpdateUI()
     {
         OnHitUpdate.Invoke(Health);
+        Debug.Log("UpdateHealthBar");
     }
 }

@@ -150,7 +150,24 @@ public class EnemyScript : MonoBehaviour
             }
             else if (enemyType == EnemyType.Botol)
             {
-                rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
+                if (distance > kardusMinDistance)
+                {
+                    Debug.Log("Walk");
+                    IsMoving = true;
+                    animator.SetBool("Attack", false);
+                    rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
+                }
+                else if (distance < kardusMinDistance)
+                {
+                    Debug.Log("Attack");
+                    animator.SetBool("Attack", true);
+                    rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    IsMoving = false;
+                    rb.velocity = Vector2.zero;
+                }
 
                 if (Time.time > nextShot)
                 {
@@ -220,7 +237,7 @@ public class EnemyScript : MonoBehaviour
             {
                 Vector2 direction = (Vector2)(other.transform.position - transform.position).normalized;
                 Vector2 knockBack = direction * knockBackForce;
-
+                Debug.Log("Hit!");
                 damagAble.OnHit(damage, knockBack);
             }
         }
@@ -261,7 +278,13 @@ public class EnemyScript : MonoBehaviour
 
     private void Strike()
     {
-        rb.AddForce(playerDirection * (movSpeed * 8f) * Time.deltaTime, ForceMode2D.Impulse);
+        if (isStriking)
+            rb.AddForce(playerDirection * (movSpeed * strikeForce) * Time.deltaTime, ForceMode2D.Impulse);
+        // Debug.Log("Player direction : " + playerDirection);
+        // Debug.Log("MoveSpeed: " + (movSpeed * strikeForce));
+        // Debug.Log("Strike : " + playerDirection * (movSpeed * strikeForce) * Time.deltaTime);
+
+        Invoke("DoneStrike", 2f);
     }
 
     private void DoneStrike()

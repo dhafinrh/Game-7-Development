@@ -23,7 +23,7 @@ public class SlipperyArea : MonoBehaviour
         {
             if (!timeout)
             {
-                PlayerControllers pl = other.GetComponent<PlayerControllers>();
+                PlayerControllers pl = other.GetComponentInChildren<PlayerControllers>();
                 pl.ApplySlipperyEffect();
             }
         }

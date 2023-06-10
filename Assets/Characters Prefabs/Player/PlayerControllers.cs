@@ -18,10 +18,10 @@ public class PlayerControllers : MonoBehaviour
     [SerializeField] private float collisionOffset = 0.05f; // Jarak tambahan untuk menghindari tabrakan
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private BoxCollider2D boxCollider;
+    [SerializeField] private BoxCollider2D boxCollider;
     private Vector2 movementInput = Vector2.zero; // Nilai input untuk arah pergerakan
     private Vector2 lastMovementDirection = Vector2.right;
-    private Rigidbody2D rb; // Referensi ke komponen Rigidbody2D
+    [SerializeField] private Rigidbody2D rb; // Referensi ke komponen Rigidbody2D
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>(); // List untuk menyimpan hasil tabrakan
     private bool canMove = true;
     private bool isMoving = false;
@@ -70,7 +70,9 @@ public class PlayerControllers : MonoBehaviour
     [SerializeField] private float healAmount;
     [SerializeField] private float healCoolDown;
     [SerializeField] private UnityEvent<float> onHealCoolDown;
+    [SerializeField] private UnityEvent<int> HealLeftUpdate;
     private int currentHealLeft;
+
     [Header("Other Properties")]
     [SerializeField] private bool isCursorVisible = false;
     [SerializeField] private float slipperyDuration = 1f;
@@ -85,10 +87,8 @@ public class PlayerControllers : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = isCursorVisible;
 
-        rb = GetComponent<Rigidbody2D>(); // Mendapatkan komponen Rigidbody2D dari GameObject
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        boxCollider = GetComponent<BoxCollider2D>();
 
         layerIndex = LayerMask.NameToLayer(layerName: "GrabAble");
 
@@ -138,7 +138,8 @@ public class PlayerControllers : MonoBehaviour
         }
         else if (Keyboard.current.digit4Key.wasPressedThisFrame)
         {
-            HealUp(healAmount);
+            if (hasHealed == false)
+                HealUp(healAmount);
         }
 
         //Throw
@@ -253,16 +254,24 @@ public class PlayerControllers : MonoBehaviour
 
     public void HealUp(float healAmount)
     {
-        if (currentHealLeft > 0)
+        if (healthManager.Health < healthManager.maxHealth)
         {
-            currentHealLeft--;
-            
-            if (healthManager.Health < healthManager.maxHealth)
+            if (currentHealLeft > 0)
             {
+                currentHealLeft--;
+
+                HealLeftUpdate.Invoke(currentHealLeft);
+
+
                 healthManager.Health += healAmount;
+
+                if (healthManager.Health > healthManager.maxHealth)
+                    healthManager.Health = healthManager.maxHealth;
+
                 healTimer = healCoolDown;
                 onHealCoolDown.Invoke(healCoolDown);
                 healthManager.OnHitUpdateUI();
+                hasHealed = true;
             }
         }
     }
@@ -362,36 +371,36 @@ public class PlayerControllers : MonoBehaviour
         {
             Vector2 targetPosition = rb.position + direction * moveSpeed * Time.fixedDeltaTime;
 
-            Collider2D[] colliders = Physics2D.OverlapBoxAll(targetPosition, boxCollider.size + new Vector2(0.1f, 0.1f), 0f);
+            // Collider2D[] colliders = Physics2D.OverlapBoxAll(targetPosition, boxCollider.size + new Vector2(0.1f, 0.1f), 0f);
 
             if (isSlippery)
             {
                 targetPosition = rb.position + direction * moveSpeed * 2.5f * Time.fixedDeltaTime;
             }
 
-            else
-            {
-                foreach (Collider2D collider in colliders)
-                {
-                    if (collider.gameObject.layer == LayerMask.NameToLayer("TileMap") && !collider.isTrigger)
-                    {
-                        Vector2 safeDirection = Vector2.zero;
+            // else
+            // {
+            //     foreach (Collider2D collider in colliders)
+            //     {
+            //         if (collider.gameObject.layer == LayerMask.NameToLayer("TileMap") && !collider.isTrigger)
+            //         {
+            //             Vector2 safeDirection = Vector2.zero;
 
-                        if (direction.x > 0f)
-                            safeDirection = Vector2.left;
-                        else if (direction.x < 0f)
-                            safeDirection = Vector2.right;
-                        else if (direction.y > 0f)
-                            safeDirection = Vector2.down;
-                        else if (direction.y < 0f)
-                            safeDirection = Vector2.up;
+            //             if (direction.x > 0f)
+            //                 safeDirection = Vector2.left;
+            //             else if (direction.x < 0f)
+            //                 safeDirection = Vector2.right;
+            //             else if (direction.y > 0f)
+            //                 safeDirection = Vector2.down;
+            //             else if (direction.y < 0f)
+            //                 safeDirection = Vector2.up;
 
-                        targetPosition = rb.position + safeDirection * moveSpeed * Time.fixedDeltaTime;
+            //             targetPosition = rb.position + safeDirection * moveSpeed * Time.fixedDeltaTime;
 
-                        break;
-                    }
-                }
-            }
+            //             break;
+            //         }
+            //     }
+            // }
 
             rb.MovePosition(targetPosition); // Move the character to the safe target position
 

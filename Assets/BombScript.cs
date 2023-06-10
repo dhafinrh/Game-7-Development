@@ -50,16 +50,15 @@ public class BombScript : MonoBehaviour
                 if (enemyType.EnemyType == EnemyType.Kardus && bombType == BombType.Water)
                 {
                     // Debug.Log("Kardus Ketemu Air");
-                    damage *= 3f;
-                    forceMultiplier = 1.5f;
+                    damage *= 5f;
+                    forceMultiplier = 2f;
                     crit = 1;
-
                 }
                 else if (enemyType.EnemyType == EnemyType.Botol && bombType == BombType.Fire)
                 {
                     //Debug.Log("Botol Ketemu Api");
-                    damage *= 3f;
-                    forceMultiplier = 1.5f;
+                    damage *= 5f;
+                    forceMultiplier = 2f;
                     crit = 1;
 
                 }

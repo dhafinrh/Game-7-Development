@@ -10,6 +10,7 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private Image healthBackground;
     [SerializeField] private Image healthBar;
     [SerializeField] private Image healCoolDownImg;
+    [SerializeField] private TMP_Text healLeft;
     [SerializeField] private TMP_Text healCooldownText;
     [SerializeField] private TMP_Text totalCoinText;
     private float healCooldownDuration = 0;
@@ -55,12 +56,20 @@ public class GameplayUI : MonoBehaviour
 
     public void UpdateHealthBar(float Health)
     {
-        healthBar.fillAmount = Health / maxHealth;
+        if (Health > 0)
+            healthBar.fillAmount = Health / maxHealth;
+        else if (Health <= 0)
+            healthBar.fillAmount = 0;
     }
 
     public void UpdateCoinCount(int currentCoin)
     {
         totalCoinText.text = currentCoin.ToString();
+    }
+
+    public void UpdateHealCount(int heal)
+    {
+        healLeft.text = heal.ToString();
     }
 
 }

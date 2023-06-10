@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 687244074018473472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.39, y: 2.39, z: 2.39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1251036272878048744}
@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 4.25}
-  m_SizeDelta: {x: 8.04, y: 0.78}
+  m_AnchoredPosition: {x: 0, y: 5.27}
+  m_SizeDelta: {x: 15.27, y: 1.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4007093882205561682
 CanvasRenderer:
@@ -103,7 +103,7 @@ RectTransform:
   m_GameObject: {fileID: 852484667789383726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.39, y: 2.39, z: 2.39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1251036272878048744}
@@ -111,8 +111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 4.25}
-  m_SizeDelta: {x: 8.04, y: 0.78}
+  m_AnchoredPosition: {x: 0, y: 5.27}
+  m_SizeDelta: {x: 15.27, y: 1.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4522059885269595807
 CanvasRenderer:
@@ -200,7 +200,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 80
+  m_Radius: 96.4
 --- !u!114 &8246428446016058634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 12.23}
+  m_AnchoredPosition: {x: 0, y: 13.56}
   m_SizeDelta: {x: 1.32, y: 1.38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4350267526086130908
@@ -308,8 +308,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 16.74
+  m_fontSizeBase: 16.74
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -484,8 +484,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4545442667086516171}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1433056, y: 0.23089214, z: -0.0038929423}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2876483999226042939}
@@ -534,7 +534,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: b0fda855e0557fc43ab1917aec20665c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d48b90f29bef11346b55a9e262840a4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -587,8 +587,8 @@ MonoBehaviour:
   avoidForce: 10
   bugMinDistance: 0
   projecttile: {fileID: 2428689397070088759, guid: f234fcede23456b4389b326be582c0cf, type: 3}
-  kardusMinDistance: 0
-  strikeForce: 10
+  kardusMinDistance: 0.5
+  strikeForce: 0
   puddleProjectile: {fileID: 2428689397070088759, guid: 849742f69cd0fa64283cf2500bcd764d, type: 3}
   enablePatrol: 1
   patrolTime: 3
@@ -677,8 +677,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -8.6}
-  m_Size: {x: 12.5, y: 23.44}
+  m_Offset: {x: -2.22, y: -8.6}
+  m_Size: {x: 17.86, y: 25.48}
   m_Direction: 0
 --- !u!114 &89813165393916052
 MonoBehaviour:
