@@ -41,20 +41,20 @@ public class BombScript : MonoBehaviour
         {
             if (collider.CompareTag("Enemy"))
             {
-                EnemyScript enemyType = collider.GetComponent<EnemyScript>();
+                EnemyScript enemyScript = collider.GetComponent<EnemyScript>();
                 HealthManager critText = collider.GetComponent<HealthManager>();
                 float damage = defaultDamage;
                 float forceMultiplier;
 
                 // Adjust damage and force based on enemy name
-                if (enemyType.EnemyType == EnemyType.Kardus && bombType == BombType.Water)
+                if (enemyScript.EnemyType== EnemyType.Kardus && bombType == BombType.Water)
                 {
                     // Debug.Log("Kardus Ketemu Air");
                     damage *= 5f;
                     forceMultiplier = 2f;
                     crit = 1;
                 }
-                else if (enemyType.EnemyType == EnemyType.Botol && bombType == BombType.Fire)
+                else if (enemyScript.EnemyType == EnemyType.Botol && bombType == BombType.Fire)
                 {
                     //Debug.Log("Botol Ketemu Api");
                     damage *= 5f;
@@ -62,7 +62,7 @@ public class BombScript : MonoBehaviour
                     crit = 1;
 
                 }
-                else if (enemyType.EnemyType == EnemyType.Bug && bombType == BombType.Bug)
+                else if (enemyScript.EnemyType == EnemyType.Bug && bombType == BombType.Bug)
                 {
                     damage *= 9f;
                     forceMultiplier = 1.5f;

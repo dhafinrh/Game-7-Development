@@ -85,8 +85,7 @@ public class HealthManager : MonoBehaviour, IDamageable
     {
         enemyCollider.enabled = false;
         animator.SetTrigger("Dead");
-
-        dropChance = 0.5f;
+        OnDie.Invoke(Health);
 
         if (Random.value <= dropChance)
         {
@@ -109,10 +108,8 @@ public class HealthManager : MonoBehaviour, IDamageable
         if (!invincible)
         {
             Health -= damage;
-            if (Health > 0)
-                OnHitUpdate.Invoke(Health);
-            else if (Health <= 0)
-                OnDie.Invoke(Health);
+            OnHitUpdate.Invoke(Health);
+
             rb.AddForce(knockBack, ForceMode2D.Impulse);
             TextDamage(damage, 0);
 

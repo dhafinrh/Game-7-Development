@@ -13,6 +13,8 @@ public class Projectile : MonoBehaviour
     bool hasCollide = false;
     SpriteRenderer projectile;
 
+    public float DefaultDamage { get => defaultDamage; set => defaultDamage = value; }
+
     private void OnEnable()
     {
         StartCoroutine(DestroyBomb());
@@ -55,7 +57,6 @@ public class Projectile : MonoBehaviour
         if (player != null)
         {
             HealthManager critText = player.GetComponent<HealthManager>();
-            float damage = defaultDamage;
             Rigidbody2D enemyRb = player.GetComponent<Rigidbody2D>();
             if (enemyRb != null)
             {
@@ -66,7 +67,7 @@ public class Projectile : MonoBehaviour
                 if (damageableObject != null)
                 {
                     crit = 0;
-                    damageableObject.OnHit(damage, crit);
+                    damageableObject.OnHit(defaultDamage, crit);
                 }
             }
         }

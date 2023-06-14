@@ -152,14 +152,12 @@ public class EnemyScript : MonoBehaviour
             {
                 if (distance > kardusMinDistance)
                 {
-                    Debug.Log("Walk");
                     IsMoving = true;
                     animator.SetBool("Attack", false);
                     rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
                 }
                 else if (distance < kardusMinDistance)
                 {
-                    Debug.Log("Attack");
                     animator.SetBool("Attack", true);
                     rb.AddForce(playerDirection * movSpeed * Time.deltaTime);
                 }
@@ -237,7 +235,7 @@ public class EnemyScript : MonoBehaviour
             {
                 Vector2 direction = (Vector2)(other.transform.position - transform.position).normalized;
                 Vector2 knockBack = direction * knockBackForce;
-                Debug.Log("Hit!");
+
                 damagAble.OnHit(damage, knockBack);
             }
         }
@@ -284,7 +282,7 @@ public class EnemyScript : MonoBehaviour
         // Debug.Log("MoveSpeed: " + (movSpeed * strikeForce));
         // Debug.Log("Strike : " + playerDirection * (movSpeed * strikeForce) * Time.deltaTime);
 
-        Invoke("DoneStrike", 2f);
+        Invoke("DoneStrike", 3f);
     }
 
     private void DoneStrike()

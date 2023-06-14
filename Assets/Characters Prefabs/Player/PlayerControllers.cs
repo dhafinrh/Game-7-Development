@@ -43,10 +43,13 @@ public class PlayerControllers : MonoBehaviour
     [SerializeField] private Transform RayPoint;
     [SerializeField] private Transform GrabPoint;
     [SerializeField] private float RayDistance;
-    private Canvas canvasPickUp;
+    [SerializeField] private UnityEvent<TrashType> OnTrashCollected;
     private GameObject grabbedObject = null;
+    private Canvas canvasPickUp;
     private int layerIndex;
+    private TrashScript currentTrashType;
     public GameObject GrabbedObject { get => grabbedObject; set { grabbedObject = value; } }
+    public TrashScript CurrentTrashType { get => currentTrashType; }
 
     [Header("Throw Properties")]
     [SerializeField] private List<GameObject> throwablePrefabs;
@@ -74,7 +77,6 @@ public class PlayerControllers : MonoBehaviour
     private int currentHealLeft;
 
     [Header("Other Properties")]
-    [SerializeField] private bool isCursorVisible = false;
     [SerializeField] private float slipperyDuration = 1f;
     private bool isSlippery = false;
     private float slipperyTimer = 1f;
@@ -84,9 +86,6 @@ public class PlayerControllers : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = isCursorVisible;
-
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -98,13 +97,6 @@ public class PlayerControllers : MonoBehaviour
 
     private void Update()
     {
-        // Toggle cursor visibility on pressing the Escape key
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            isCursorVisible = true;
-            Cursor.visible = isCursorVisible;
-        }
-
         if (healTimer > 0)
         {
             healTimer -= Time.deltaTime;
@@ -223,8 +215,10 @@ public class PlayerControllers : MonoBehaviour
                 if (Keyboard.current.spaceKey.wasReleasedThisFrame && grabbedObject == null)
                 {
                     grabbedObject = collider.gameObject;
-                    grabbedObject.transform.SetParent(transform);
+                    GameObject playerParent = transform.parent.gameObject;
+                    grabbedObject.transform.SetParent(playerParent.transform);
                     grabbedObject.transform.localPosition = GrabPoint.localPosition;
+                    currentTrashType = grabbedObject.GetComponent<TrashScript>();
                 }
             }
             else if (collider.gameObject.layer != layerIndex && canvasPickUp != null)
@@ -239,8 +233,6 @@ public class PlayerControllers : MonoBehaviour
             grabbedObject = null;
         }
 
-        float overlapRadius = 1;
-        Collider2D[] overlappedColliders = Physics2D.OverlapCircleAll(transform.position, overlapRadius);
 
         if (isSlippery)
         {
@@ -289,12 +281,16 @@ public class PlayerControllers : MonoBehaviour
     {
         foreach (GameObject active in activeThrowable)
         {
-            active.SetActive(false);
+            if (active != null)
+                active.SetActive(false);
         }
         for (int i = 0; i < activeThrowable.Count; i++)
         {
-            currentThrowable = activeThrowable[i].gameObject;
-            currentThrowable.SetActive(i == currentThrowableIndex);
+            if (activeThrowable[i] != null)
+            {
+                currentThrowable = activeThrowable[i].gameObject;
+                currentThrowable.SetActive(i == currentThrowableIndex);
+            }
         }
     }
 
@@ -341,21 +337,48 @@ public class PlayerControllers : MonoBehaviour
     private void Throw()
     {
         CancelAim();
-        if (currentThrowablesLeft > 0)
+        if (currentThrowablesLeft > 0 && !isThrowCoolDown)
         {
-            // Decrease the number of throwables
-            currentThrowablesLeft--;
-            isAiming = false;
+            GameObject chosenThrowable = null;
+            Vector2 throwDirection = arrowAim.transform.right;
 
-            GameObject throwableObject = Instantiate(throwablePrefabs[currentThrowableIndex], transform.position, Quaternion.identity);
-            Rigidbody2D throwableRb = throwableObject.GetComponent<Rigidbody2D>();
+            // Use a switch statement to check the value of currentThrowableIndex
+            switch (currentThrowableIndex)
+            {
+                case 0:
+                    // Instantiate throwable of type 0
+                    chosenThrowable = Instantiate(throwablePrefabs[0], transform.position, Quaternion.identity);
 
-            Vector2 throwDirection = arrowAim.transform.right; // Use aim direction instead of player's throw direction
-            throwableRb.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
+                    Rigidbody2D throwableRb = chosenThrowable.GetComponent<Rigidbody2D>();
+                    throwableRb.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
+                    break;
+                case 1:
+                    // Instantiate multiple throwables of type 1
+                    int numThrowables = 8; // Number of throwables to instantiate
+                    float angleBetweenThrowables = 360f / numThrowables; // Angle between each throwable in degrees
 
-            isThrowCoolDown = true;
-            OnThrowCoolDown.Invoke(throwCoolDown);
-            throwTimer = throwCoolDown;
+                    for (int i = 0; i < numThrowables; i++)
+                    {
+                        chosenThrowable = Instantiate(throwablePrefabs[1], transform.position, Quaternion.identity);
+                        activeThrowable.Add(chosenThrowable);
+
+                        // Set the direction and force of the throw
+                        float angle = i * angleBetweenThrowables;
+                        throwDirection = Quaternion.Euler(0, 0, angle) * Vector2.right;
+                        Rigidbody2D throwableRb2 = chosenThrowable.GetComponent<Rigidbody2D>();
+                        throwableRb2.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
+                    }
+                    break;
+                    // Add more cases here for other types of throwables
+            }
+
+            if (chosenThrowable != null)
+            {
+                currentThrowablesLeft--;
+                isThrowCoolDown = true;
+                OnThrowCoolDown.Invoke(throwCoolDown);
+                throwTimer = throwCoolDown;
+            }
         }
     }
 
@@ -363,6 +386,21 @@ public class PlayerControllers : MonoBehaviour
     {
         arrowAim.enabled = false;
         isAiming = false;
+    }
+
+    public void TrashCollected()
+    {
+        if (grabbedObject != null)
+        {
+            TrashScript trashScript = grabbedObject.GetComponent<TrashScript>();
+            OnTrashCollected.Invoke(trashScript.TrashType);
+            Invoke("DestroyTrash", 0.1f);
+        }
+    }
+
+    private void DestroyTrash()
+    {
+        Destroy(grabbedObject);
     }
 
     private bool TryMove(Vector2 direction)

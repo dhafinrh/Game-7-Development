@@ -13,6 +13,10 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private TMP_Text healLeft;
     [SerializeField] private TMP_Text healCooldownText;
     [SerializeField] private TMP_Text totalCoinText;
+    [SerializeField] private TMP_Text blueText;
+    [SerializeField] private TMP_Text greenText;
+    [SerializeField] private TMP_Text yellowText;
+    [SerializeField] private TMP_Text redText;
     private float healCooldownDuration = 0;
     private float currentHealCooldown = 0;
     private Camera mainCamera;
@@ -56,10 +60,12 @@ public class GameplayUI : MonoBehaviour
 
     public void UpdateHealthBar(float Health)
     {
-        if (Health > 0)
-            healthBar.fillAmount = Health / maxHealth;
-        else if (Health <= 0)
-            healthBar.fillAmount = 0;
+        healthBar.fillAmount = Health / maxHealth;
+    }
+
+    public void OnDie(float Health)
+    {
+        healthBar.fillAmount = 0;
     }
 
     public void UpdateCoinCount(int currentCoin)
@@ -70,6 +76,28 @@ public class GameplayUI : MonoBehaviour
     public void UpdateHealCount(int heal)
     {
         healLeft.text = heal.ToString();
+    }
+
+    public void UpdateTrashCount(TrashType trashType, int amount)
+    {
+        switch (trashType)
+        {
+            case TrashType.Green:
+                greenText.text = amount.ToString();
+                Debug.Log("Yang di UI Green : " + amount);
+                break;
+            case TrashType.Yellow:
+                yellowText.text = amount.ToString();
+                Debug.Log("Yang di UI Yellow : " + amount);
+                break;
+            case TrashType.Red:
+                redText.text = amount.ToString();
+                Debug.Log("Yang di UI Red : " + amount);
+                break;
+            default:
+                Debug.LogError("Invalid trash ID: " + trashType);
+                break;
+        }
     }
 
 }

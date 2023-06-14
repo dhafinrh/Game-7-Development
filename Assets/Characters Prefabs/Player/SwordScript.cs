@@ -85,6 +85,8 @@ public class SwordScript : MonoBehaviour
 
         if (other.CompareTag("Bomb"))
         {
+            Debug.Log("Tangkis");
+            Projectile projectile = other.GetComponent<Projectile>();
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
             rb.AddForce(-transform.position * hitback, ForceMode2D.Impulse);
         }
