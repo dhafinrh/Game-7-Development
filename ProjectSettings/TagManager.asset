@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - GameplayUI
   - Bomb
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Fly Enemy
   - TileMap
   - Projectile
-  - 
+  - Coin
   - 
   - 
   - 

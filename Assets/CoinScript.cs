@@ -10,6 +10,9 @@ public class CoinScript : MonoBehaviour
     bool timeout = false;
     CircleCollider2D circleCollider2D;
     public static event System.Action<int> onCoinCollected;
+    
+    public AudioSource onCollect; 
+    public AudioClip AudioClip;
 
     private void OnEnable()
     {
@@ -29,6 +32,8 @@ public class CoinScript : MonoBehaviour
                 StartCoroutine(CoinCollected());
 
                 onCoinCollected?.Invoke(1);
+                
+                onCollect.PlayOneShot(AudioClip);
             }
             else
             {
