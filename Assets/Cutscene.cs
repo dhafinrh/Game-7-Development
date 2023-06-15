@@ -55,20 +55,23 @@ public class Cutscene : MonoBehaviour
                     enemy.enabled = false;
                 }
                 OnCutsceneStart.Invoke();
-                isDisplayed = true;
             }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (!isDisplayed)
         {
-            EnemyScript[] enemies = GameObject.FindObjectsOfType<EnemyScript>();
-            foreach (EnemyScript enemy in enemies)
+            if (collision.tag == "Player")
             {
-                enemy.enabled = true;
+                EnemyScript[] enemies = GameObject.FindObjectsOfType<EnemyScript>();
+                foreach (EnemyScript enemy in enemies)
+                {
+                    enemy.enabled = true;
+                }
+                OnCutsceneEnd.Invoke();
+                isDisplayed = true;
             }
-            OnCutsceneEnd.Invoke();
         }
     }
 

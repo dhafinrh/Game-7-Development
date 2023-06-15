@@ -32781,6 +32781,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  playerControllers: {fileID: 2060577303}
   playerCoin: 0
   onUpdateCoin:
     m_PersistentCalls:
@@ -145277,6 +145278,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2246593386123821887, guid: bfab6358fae001749a90aee1374fcce1, type: 3}
   m_PrefabInstance: {fileID: 1458123}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2060577303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5166012417102705755, guid: 45f4699772baa854eb239881087f80d1, type: 3}
+  m_PrefabInstance: {fileID: 1552428898055867492}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d617b404e8fe4349a5a2122b83110f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2061628614
 GameObject:
   m_ObjectHideFlags: 0
