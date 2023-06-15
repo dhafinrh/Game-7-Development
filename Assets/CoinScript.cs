@@ -13,7 +13,7 @@ public class CoinScript : MonoBehaviour
     
     public AudioSource onCollect; 
     public AudioClip AudioClip;
-
+    // public float SFXVolume;
     private void OnEnable()
     {
         animator = GetComponent<Animator>();
@@ -33,7 +33,8 @@ public class CoinScript : MonoBehaviour
 
                 onCoinCollected?.Invoke(1);
                 
-                onCollect.PlayOneShot(AudioClip);
+                // onCollect.PlayOneShot(AudioClip);
+                onCollect.Play();
             }
             else
             {

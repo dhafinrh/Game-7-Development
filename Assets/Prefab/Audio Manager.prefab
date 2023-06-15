@@ -47,11 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99d6a305548684046bb5841346b414fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxSource: {fileID: 3645789468654894327}
-  bgmSource: {fileID: 3645789468973746233}
-  sfxVolume: 0
-  bgmVolume: 0
-  isMuted: 0
+  music: {fileID: 3645789468973746233}
+  musicVolumeSlider: {fileID: 0}
 --- !u!1 &3645789468654894326
 GameObject:
   m_ObjectHideFlags: 0
