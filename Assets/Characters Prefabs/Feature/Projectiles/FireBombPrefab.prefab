@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombType: 2
-  explosionForce: 1
+  explosionForce: 8
   explosionRadius: 0.3
   defaultDamage: 1
 --- !u!212 &2428689397070088762

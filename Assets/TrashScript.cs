@@ -4,17 +4,20 @@ using UnityEngine.UI;
 
 public class TrashScript : MonoBehaviour
 {
-    private TrashType trashType;
+    [SerializeField] private TrashType trashType;
     [SerializeField] private List<Sprite> greenTrashSprites;
     [SerializeField] private List<Sprite> yellowTrashSprites;
     [SerializeField] private List<Sprite> redTrashSprites;
+    [SerializeField] bool randomize = true;
     private SpriteRenderer thisTrash;
 
     public TrashType TrashType { get => trashType; }
 
     private void OnEnable()
     {
-        trashType = (TrashType)Random.Range(1, 4);
+        if (randomize)
+            trashType = (TrashType)Random.Range(1, 4);
+
         thisTrash = GetComponentInChildren<SpriteRenderer>();
 
         switch (trashType)

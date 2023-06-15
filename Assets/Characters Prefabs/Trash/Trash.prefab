@@ -338,19 +338,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5cd4b218e1748641ab7fea3786a03a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trashType: 0
   greenTrashSprites:
   - {fileID: 21300000, guid: 1d9227bc780adc04686f12ae243f296e, type: 3}
   - {fileID: 21300000, guid: 53773e326f042ad4bae0458a754da272, type: 3}
   - {fileID: 21300000, guid: d919795ffb671044992f4a5a0adc8777, type: 3}
   - {fileID: 21300000, guid: 949e02dfca69dce4b81265ec4835065e, type: 3}
   yellowTrashSprites:
-  - {fileID: -923804572, guid: c98dd28101d405446a96eb63d4b7746b, type: 3}
-  - {fileID: -198283593, guid: c98dd28101d405446a96eb63d4b7746b, type: 3}
+  - {fileID: -725315908, guid: 1993edfcd9933c5488d7964c3c3f8ccc, type: 3}
+  - {fileID: 2104448571, guid: 1993edfcd9933c5488d7964c3c3f8ccc, type: 3}
+  - {fileID: -1073919670, guid: 1993edfcd9933c5488d7964c3c3f8ccc, type: 3}
+  - {fileID: -214007001, guid: 1993edfcd9933c5488d7964c3c3f8ccc, type: 3}
   redTrashSprites:
   - {fileID: -1832591130, guid: 012b6cc3b346dee4783a008f925eecb6, type: 3}
   - {fileID: -1738620678, guid: 012b6cc3b346dee4783a008f925eecb6, type: 3}
   - {fileID: 621807653, guid: 012b6cc3b346dee4783a008f925eecb6, type: 3}
   - {fileID: 1372844162, guid: 012b6cc3b346dee4783a008f925eecb6, type: 3}
+  randomize: 1
 --- !u!222 &8504583083666990985
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -508,7 +512,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1832591130, guid: 012b6cc3b346dee4783a008f925eecb6, type: 3}
+  m_Sprite: {fileID: -725315908, guid: 1993edfcd9933c5488d7964c3c3f8ccc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

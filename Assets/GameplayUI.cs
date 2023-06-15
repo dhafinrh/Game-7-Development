@@ -24,7 +24,7 @@ public class GameplayUI : MonoBehaviour
 
     public void OnEnable()
     {
-        totalCoin = PlayerPrefs.GetInt("TotalCoins", 0);
+        //totalCoin = PlayerPrefs.GetInt("TotalCoins", 0);
         UpdateCoinCount(totalCoin);
     }
 
@@ -78,26 +78,48 @@ public class GameplayUI : MonoBehaviour
         healLeft.text = heal.ToString();
     }
 
-    public void UpdateTrashCount(TrashType trashType, int amount)
+    public void UpdateTrashCount(TrashType trashType, int amount, int minimumAmount)
     {
         switch (trashType)
         {
             case TrashType.Green:
                 greenText.text = amount.ToString();
-                Debug.Log("Yang di UI Green : " + amount);
+                if (amount >= minimumAmount)
+                {
+                    greenText.color = Color.green;
+                }
+                else
+                {
+                    greenText.color = Color.white;
+                }
                 break;
             case TrashType.Yellow:
                 yellowText.text = amount.ToString();
-                Debug.Log("Yang di UI Yellow : " + amount);
+                if (amount >= minimumAmount)
+                {
+                    yellowText.color = Color.green;
+                }
+                else
+                {
+                    yellowText.color = Color.white;
+                }
                 break;
             case TrashType.Red:
                 redText.text = amount.ToString();
-                Debug.Log("Yang di UI Red : " + amount);
+                if (amount >= minimumAmount)
+                {
+                    redText.color = Color.green;
+                }
+                else
+                {
+                    redText.color = Color.white;
+                }
                 break;
             default:
                 Debug.LogError("Invalid trash ID: " + trashType);
                 break;
         }
     }
+
 
 }

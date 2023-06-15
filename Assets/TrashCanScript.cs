@@ -8,6 +8,8 @@ public class TrashCanScript : MonoBehaviour
 {
     [SerializeField] private TrashType trashtype;
     [SerializeField] private Canvas notMatchCanvas;
+    [SerializeField] private bool isTutorial = false;
+    public UnityEvent OnFirstTrash;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -24,6 +26,11 @@ public class TrashCanScript : MonoBehaviour
                 {
                     Debug.Log(this.trashtype);
                     playerControllers.TrashCollected();
+                    if (isTutorial)
+                    {
+                        OnFirstTrash.Invoke();
+                        isTutorial = false;
+                    }
                 }
                 else
                 {
