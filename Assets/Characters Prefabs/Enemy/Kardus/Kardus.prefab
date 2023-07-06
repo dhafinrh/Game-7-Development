@@ -453,7 +453,7 @@ MonoBehaviour:
   bugMinDistance: 0
   projecttile: {fileID: 2428689397070088759, guid: f234fcede23456b4389b326be582c0cf, type: 3}
   kardusMinDistance: 0.5
-  strikeForce: 10
+  strikeForce: 12
   puddleProjectile: {fileID: 0}
   enablePatrol: 1
   patrolTime: 4
@@ -491,13 +491,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
+  firstHit:
+    m_PersistentCalls:
+      m_Calls: []
   isInvincibleEnabled: 1
   invincibleTime: 1
   health: 18
   dmgTextPrefab: {fileID: 1011127707723379089, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
   dmgText: {fileID: 1011127707723379103, guid: d3ab87cdabbafc3429ea1498017d7c1e, type: 3}
   colorHex: '#FF9284'
-  dropChance: 0.3
+  dropChance: 0.8
   coinPrefab: {fileID: 9189969028447828554, guid: e38db04788bc9da4b899c4383f19ef0b, type: 3}
   OnStart:
     m_PersistentCalls:

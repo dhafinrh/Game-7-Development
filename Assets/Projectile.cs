@@ -47,9 +47,16 @@ public class Projectile : MonoBehaviour
 
     IEnumerator DestroyBomb()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         if (!hasCollide)
-            Destroy(this.projectile);
+            Destroy(gameObject);
+    }
+
+    IEnumerator DestroyBombEventhouItHasCollide()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (hasCollide)
+            Destroy(gameObject);
     }
 
     private void BugExplode(GameObject player)
@@ -73,12 +80,13 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            Destroy(this.projectile);
+            Destroy(this.gameObject);
         }
     }
 
     private void PuddleSpawn(Transform playerPos)
     {
         Instantiate(puddlePrefab, playerPos.transform.position, Quaternion.identity);
+        StartCoroutine(DestroyBombEventhouItHasCollide());
     }
 }

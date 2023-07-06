@@ -10,6 +10,7 @@ public class PlayManager : MonoBehaviour
     [SerializeField] private PlayerControllers playerControllers;
     public int playerCoin = 0;
     public UnityEvent<int> onUpdateCoin;
+    public UnityEvent onCoinSound;
     [SerializeField] private bool isCursorVisible;
     [SerializeField] private int greenTrash;
     [SerializeField] private int yellowTrash;
@@ -53,10 +54,6 @@ public class PlayManager : MonoBehaviour
             isCursorVisible = false;
             Cursor.visible = isCursorVisible;
         }
-
-        if (greenTrash >= minimumGreen && yellowTrash >= minimumYellow && redTrash >= minimumRed)
-            OnWin.Invoke();
-
     }
 
     private void OnEnable()
@@ -83,10 +80,16 @@ public class PlayManager : MonoBehaviour
     private void HandleCoinCollected(int value)
     {
         playerCoin += value;
+        onCoinSound.Invoke();
+        // PlayerPrefs.SetInt("TotalCoins", playerCoin);
+        // PlayerPrefs.Save();
 
-        PlayerPrefs.SetInt("TotalCoins", playerCoin);
-        PlayerPrefs.Save();
+        onUpdateCoin.Invoke(playerCoin);
+    }
 
+    public void CoinUsed(float amount)
+    {
+        playerCoin -= 2;
         onUpdateCoin.Invoke(playerCoin);
     }
 
@@ -111,6 +114,9 @@ public class PlayManager : MonoBehaviour
                 Debug.LogError("Invalid trash ID: " + trashType);
                 break;
         }
+
+        if (greenTrash >= minimumGreen && yellowTrash >= minimumYellow && redTrash >= minimumRed)
+            OnWin.Invoke();
     }
 
     public void Replay()

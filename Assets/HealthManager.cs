@@ -26,6 +26,10 @@ public class HealthManager : MonoBehaviour, IDamageable
     bool invincible;
     float invincibleTimeElapsed = 0f;
     public float maxHealth;
+    [SerializeField] private UnityEvent firstHit;
+
+    private bool istutorial = false;
+
     public float Health
     {
         set
@@ -38,6 +42,12 @@ public class HealthManager : MonoBehaviour, IDamageable
             else
             {
                 Damage();
+
+                if (!istutorial)
+                {
+                    firstHit.Invoke();
+                    istutorial = true;
+                }
             }
         }
         get

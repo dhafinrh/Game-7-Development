@@ -15,10 +15,12 @@ public class Cutscene : MonoBehaviour
     public UnityEvent OnCutsceneEnd;
     public UnityEvent OnWarningStart;
     public UnityEvent OnWarningEnd;
+    Animator animator;
     bool isDisplayed;
 
     private void OnEnable()
     {
+        animator = GetComponentInChildren<Animator>();
         dialogText.text = text.ToString();
     }
 
@@ -38,11 +40,13 @@ public class Cutscene : MonoBehaviour
 
             if (allEnemiesDead && !isDisplayed)
             {
+                animator.SetTrigger("Cleared");
                 dialogText.text = text.ToString();
                 boxCollider2D.isTrigger = true;
             }
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!isDisplayed)
@@ -58,6 +62,7 @@ public class Cutscene : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!isDisplayed)
@@ -85,5 +90,10 @@ public class Cutscene : MonoBehaviour
     {
         if (other.collider.CompareTag("Player"))
             OnWarningEnd.Invoke();
+    }
+
+    public void Trigerred()
+    {
+        animator.SetTrigger("Cleared");
     }
 }

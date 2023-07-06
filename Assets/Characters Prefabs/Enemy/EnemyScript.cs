@@ -271,16 +271,14 @@ public class EnemyScript : MonoBehaviour
 
     private void PrepareStrike()
     {
-        animator.SetTrigger("doStrike");
+        if (enabled)
+            animator.SetTrigger("doStrike");
     }
 
     private void Strike()
     {
         if (isStriking)
-            rb.AddForce(playerDirection * (movSpeed * strikeForce) * Time.deltaTime, ForceMode2D.Impulse);
-        // Debug.Log("Player direction : " + playerDirection);
-        // Debug.Log("MoveSpeed: " + (movSpeed * strikeForce));
-        // Debug.Log("Strike : " + playerDirection * (movSpeed * strikeForce) * Time.deltaTime);
+            rb.MovePosition(rb.position + playerDirection * strikeForce * Time.deltaTime);
 
         Invoke("DoneStrike", 3f);
     }

@@ -68,13 +68,11 @@ public class PlayerControllers : MonoBehaviour
     bool isThrowCoolDown;
     float throwTimer;
 
-    [Header("Other Properties")]
-    [SerializeField] private int maxHeal;
+    [Header("Heal Properties")]
     [SerializeField] private float healAmount;
     [SerializeField] private float healCoolDown;
     [SerializeField] private UnityEvent<float> onHealCoolDown;
-    [SerializeField] private UnityEvent<int> HealLeftUpdate;
-    private int currentHealLeft;
+    private int coin;
 
     [Header("Other Properties")]
     [SerializeField] private float slipperyDuration = 1f;
@@ -82,7 +80,6 @@ public class PlayerControllers : MonoBehaviour
     private float slipperyTimer = 1f;
     private float healTimer = 0f;
     private bool hasHealed = false;
-
 
     private void Start()
     {
@@ -92,11 +89,11 @@ public class PlayerControllers : MonoBehaviour
         layerIndex = LayerMask.NameToLayer(layerName: "GrabAble");
 
         currentThrowablesLeft = maxThrowables;
-        currentHealLeft = maxHeal;
     }
 
     private void Update()
     {
+
         if (healTimer > 0)
         {
             healTimer -= Time.deltaTime;
@@ -246,15 +243,11 @@ public class PlayerControllers : MonoBehaviour
 
     public void HealUp(float healAmount)
     {
-        if (healthManager.Health < healthManager.maxHealth)
+        if (coin >= 2)
         {
-            if (currentHealLeft > 0)
+            coin -= 2;
+            if (healthManager.Health < healthManager.maxHealth)
             {
-                currentHealLeft--;
-
-                HealLeftUpdate.Invoke(currentHealLeft);
-
-
                 healthManager.Health += healAmount;
 
                 if (healthManager.Health > healthManager.maxHealth)
@@ -342,34 +335,20 @@ public class PlayerControllers : MonoBehaviour
             GameObject chosenThrowable = null;
             Vector2 throwDirection = arrowAim.transform.right;
 
-            // Use a switch statement to check the value of currentThrowableIndex
-            switch (currentThrowableIndex)
+            // Instantiate multiple throwables of the current chosen type
+            int numThrowables = 8; // Number of throwables to instantiate
+            float angleBetweenThrowables = 360f / numThrowables; // Angle between each throwable in degrees
+
+            for (int i = 0; i < numThrowables; i++)
             {
-                case 0:
-                    // Instantiate throwable of type 0
-                    chosenThrowable = Instantiate(throwablePrefabs[0], transform.position, Quaternion.identity);
+                chosenThrowable = Instantiate(throwablePrefabs[currentThrowableIndex], transform.position, Quaternion.identity);
+                activeThrowable.Add(chosenThrowable);
 
-                    Rigidbody2D throwableRb = chosenThrowable.GetComponent<Rigidbody2D>();
-                    throwableRb.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
-                    break;
-                case 1:
-                    // Instantiate multiple throwables of type 1
-                    int numThrowables = 8; // Number of throwables to instantiate
-                    float angleBetweenThrowables = 360f / numThrowables; // Angle between each throwable in degrees
-
-                    for (int i = 0; i < numThrowables; i++)
-                    {
-                        chosenThrowable = Instantiate(throwablePrefabs[1], transform.position, Quaternion.identity);
-                        activeThrowable.Add(chosenThrowable);
-
-                        // Set the direction and force of the throw
-                        float angle = i * angleBetweenThrowables;
-                        throwDirection = Quaternion.Euler(0, 0, angle) * Vector2.right;
-                        Rigidbody2D throwableRb2 = chosenThrowable.GetComponent<Rigidbody2D>();
-                        throwableRb2.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
-                    }
-                    break;
-                    // Add more cases here for other types of throwables
+                // Set the direction and force of the throw
+                float angle = i * angleBetweenThrowables;
+                throwDirection = Quaternion.Euler(0, 0, angle) * Vector2.right;
+                Rigidbody2D throwableRb2 = chosenThrowable.GetComponent<Rigidbody2D>();
+                throwableRb2.AddForce(throwDirection * throwPower, ForceMode2D.Impulse);
             }
 
             if (chosenThrowable != null)
@@ -454,14 +433,25 @@ public class PlayerControllers : MonoBehaviour
     void OnMove(InputValue movementValue)
     {
         movementInput = movementValue.Get<Vector2>(); // Mendapatkan nilai input pergerakan dari Input System
+
+
     }
 
     void OnAttack()
     {
-        animator.SetTrigger("swordAttack");
+        if (enabled)
+        {
+            animator.SetTrigger("swordAttack");
 
-        if (isAiming)
-            CancelAim();
+            if (isAiming)
+                CancelAim();
+        }
+    }
+
+    public void UpdateCoinLeft(int amount)
+    {
+        coin = amount;
+
     }
 
     public void ApplySlipperyEffect()

@@ -8,15 +8,17 @@ public class GameplayUI : MonoBehaviour
 {
     private float maxHealth;
     [SerializeField] private Image healthBackground;
+    [SerializeField] private TMP_Text maxHealthText;
+    [SerializeField] private TMP_Text currentHealth;
     [SerializeField] private Image healthBar;
     [SerializeField] private Image healCoolDownImg;
-    [SerializeField] private TMP_Text healLeft;
     [SerializeField] private TMP_Text healCooldownText;
     [SerializeField] private TMP_Text totalCoinText;
     [SerializeField] private TMP_Text blueText;
     [SerializeField] private TMP_Text greenText;
     [SerializeField] private TMP_Text yellowText;
     [SerializeField] private TMP_Text redText;
+    [SerializeField] private Image healAvailable;
     private float healCooldownDuration = 0;
     private float currentHealCooldown = 0;
     private Camera mainCamera;
@@ -26,6 +28,7 @@ public class GameplayUI : MonoBehaviour
     {
         //totalCoin = PlayerPrefs.GetInt("TotalCoins", 0);
         UpdateCoinCount(totalCoin);
+        maxHealthText.text = maxHealth.ToString();
     }
 
     void Update()
@@ -61,6 +64,7 @@ public class GameplayUI : MonoBehaviour
     public void UpdateHealthBar(float Health)
     {
         healthBar.fillAmount = Health / maxHealth;
+        currentHealth.text = Health.ToString();
     }
 
     public void OnDie(float Health)
@@ -71,11 +75,11 @@ public class GameplayUI : MonoBehaviour
     public void UpdateCoinCount(int currentCoin)
     {
         totalCoinText.text = currentCoin.ToString();
-    }
 
-    public void UpdateHealCount(int heal)
-    {
-        healLeft.text = heal.ToString();
+        if (currentCoin >= 2)
+            healAvailable.color = Color.white;
+        else
+            healAvailable.color = Color.black;
     }
 
     public void UpdateTrashCount(TrashType trashType, int amount, int minimumAmount)
@@ -90,7 +94,7 @@ public class GameplayUI : MonoBehaviour
                 }
                 else
                 {
-                    greenText.color = Color.white;
+                    greenText.color = Color.black;
                 }
                 break;
             case TrashType.Yellow:
@@ -101,7 +105,7 @@ public class GameplayUI : MonoBehaviour
                 }
                 else
                 {
-                    yellowText.color = Color.white;
+                    yellowText.color = Color.black;
                 }
                 break;
             case TrashType.Red:
@@ -112,7 +116,7 @@ public class GameplayUI : MonoBehaviour
                 }
                 else
                 {
-                    redText.color = Color.white;
+                    redText.color = Color.black;
                 }
                 break;
             default:
