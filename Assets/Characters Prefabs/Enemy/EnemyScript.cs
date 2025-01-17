@@ -110,7 +110,7 @@ public class EnemyScript : MonoBehaviour
                 else
                 {
                     IsMoving = false;
-                    rb.velocity = Vector2.zero; // Stop the enemy's movement by setting its velocity to zero
+                    rb.linearVelocity = Vector2.zero; // Stop the enemy's movement by setting its velocity to zero
                 }
                 Rotation();
 
@@ -137,7 +137,7 @@ public class EnemyScript : MonoBehaviour
                     if (!isStriking)
                     {
                         isStriking = true;
-                        rb.velocity = Vector2.zero;
+                        rb.linearVelocity = Vector2.zero;
                         IsMoving = false;
                         PrepareStrike();
                     }
@@ -145,7 +145,7 @@ public class EnemyScript : MonoBehaviour
                 else
                 {
                     IsMoving = false;
-                    rb.velocity = Vector2.zero;
+                    rb.linearVelocity = Vector2.zero;
                 }
             }
             else if (enemyType == EnemyType.Botol)
@@ -164,7 +164,7 @@ public class EnemyScript : MonoBehaviour
                 else
                 {
                     IsMoving = false;
-                    rb.velocity = Vector2.zero;
+                    rb.linearVelocity = Vector2.zero;
                 }
 
                 if (Time.time > nextShot)

@@ -33,9 +33,9 @@ public class PlayerControllers : MonoBehaviour
             animator.SetBool("isMoving", value);
 
             if (isMoving == true)
-                rb.drag = moveDrag;
+                rb.linearDamping = moveDrag;
             else
-                rb.drag = stopDrag;
+                rb.linearDamping = stopDrag;
         }
     }
 
